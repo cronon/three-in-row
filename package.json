@@ -9,7 +9,14 @@
   "dependencies": {
     "gulp": "~3.9.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "~3.9.0",
+    "gulp-jade": "~1.0.1",
+    "gulp-typescript": "~2.7.8",
+    "gulp-concat": "~2.6.0",
+    "bower": "~1.4.1",
+    "main-bower-files": "~2.8.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
