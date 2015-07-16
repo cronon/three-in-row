@@ -11,4 +11,8 @@ class A {
 }
 
 var a:A = new A()
-console.log(a.getX())
+interface F {
+    (i:number[]): number;
+}
+var [b, ...c] = [1,2,3,4]
+console.log(b,c)

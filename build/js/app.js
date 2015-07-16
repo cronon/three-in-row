@@ -9,4 +9,5 @@ var A = (function () {
     return A;
 })();
 var a = new A();
-console.log(a.getX());
+var _a = [1, 2, 3, 4], b = _a[0], c = _a.slice(1);
+console.log(b, c);
