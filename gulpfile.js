@@ -17,8 +17,10 @@ var ts = require('gulp-typescript');
 gulp.task('ts', function () {
   var tsResult = gulp.src('src/**/*.ts')
     .pipe(ts({
-        noImplicitAny: true,
-        out: 'app.js'
+        noImplicitAny: false,
+        out: 'app.js',
+        module: 'commonjs',
+        target: 'ES5'
       }));
   return tsResult.js.pipe(gulp.dest('build/js'));
 });

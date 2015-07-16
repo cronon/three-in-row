@@ -1,3 +1,5 @@
+//<reference path="Backbone.d.ts" />
+import bb = require('backbone')
 class A {
     x:number
     y:number[]
@@ -9,10 +11,15 @@ class A {
         return this.x;
     }
 }
-
-var a:A = new A()
-interface F {
-    (i:number[]): number;
+class Point {
+    x: number;
+    y: number;
 }
-var [b, ...c] = [1,2,3,4]
-console.log(b,c)
+
+interface Point3d extends Point {
+    z: number;
+}
+function f (x: number) : ((y: string) => any) {
+    return (y: string) => y+x
+}
+var M = bb.Model;
