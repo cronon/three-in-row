@@ -13,24 +13,38 @@ gulp.task('jade', function(){
     .pipe(gulp.dest('build'));
 });
 
-var ts = require('gulp-typescript');
-gulp.task('ts', function () {
-  var tsResult = gulp.src('src/**/*.ts')
-    .pipe(ts({
-        noImplicitAny: false,
-        out: 'app.js',
-        module: 'commonjs',
-        target: 'ES5'
-      }));
-  return tsResult.js.pipe(gulp.dest('build/js'));
-});
-
-var mainBowerFiles = require('main-bower-files');
 var concat = require('gulp-concat');
+var mainBowerFiles = require('main-bower-files');
 gulp.task('bowerFiles', function() {
     return gulp.src(mainBowerFiles(), {
         base: 'bower_components' 
       })
         .pipe(concat('libs.js'))
         .pipe(gulp.dest('build/js'))
+});
+
+gulp.task('concatAll', function() {
+  return gulp.src(['build/js/libs.js', 'build/js/**/*.js'])
+      .pipe(concat('app.js'))
+      .pipe(gulp.dest('build/js'))
+})
+
+var babel = require('gulp-babel');
+gulp.task('babel', function () {
+    return gulp.src('src/**/*.js')
+        .pipe(babel({
+          sourceMaps: true,
+        }))
+        .pipe(gulp.dest('build'));
+});
+
+var Server = require('karma').Server;
+/**
+ * Run test once and exit
+ */
+gulp.task('test', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
 });
