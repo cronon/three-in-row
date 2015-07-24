@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 
-gulp.task('default', ['jade', 'ts', 'bowerFiles'], function() {
+gulp.task('default', ['jade', 'bowerFiles'], function() {
   console.log('Gulp runs!')
 });
 
