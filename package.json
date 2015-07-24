@@ -18,8 +18,8 @@
     "karma-jasmine": "~0.3.6",
     "phantomjs": "~1.9.17",
     "karma-phantomjs-launcher": "~0.2.0",
-    "gulp-babel": "~5.1.0",
-    "karma-babel-preprocessor": "~5.2.1"
+    "gulp-babel": "latest",
+    "karma-babel-preprocessor": "latest"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
