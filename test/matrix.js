@@ -1,10 +1,10 @@
 describe("Matrix", () => {
     let m
     beforeEach(() =>{
-        m = new Matrix(5,10, (x,y) => { return {x,y} })
+        m = new Matrix(5,10, (x,y) => ({x,y}))
     })
     it("creates", () => {
-        expect(m instanceof Matrix).toBe(true)
+        expect(m instanceof Function).toBe(true)
     })
 
     it("has width", () => {
@@ -14,16 +14,29 @@ describe("Matrix", () => {
         expect(m.height).toEqual(10)
     })
     it("has getter", () => {
-        let cell = m.get(1,1)
+        let cell = m(1,1)
         expect(cell).toBeDefined()
     })
     it("has setter", () => {
         m(1,1,12321)
-        let cell = m.set(1,1)
+        let cell = m(1,1)
         expect(cell).toEqual(12321)
     })
     it("accept function for default values", ()=>{
-        let cell = m.get(1,1)
+        let m = new Matrix(5,10, (x,y) => ({x,y}) )
+        let cell = m(1,1)
         expect(cell).toEqual({x: 1, y: 1})
+    })
+    it("has first argument for x and second for y", () => {
+        let m = new Matrix(5,10, (x,y) => ({x,y}) )
+        let cell = m(1,5)
+        expect(cell).toEqual({x:1, y:5})
+    })
+    it("throws range error", ()=>{
+        let m = new Matrix(2,3)
+        let x = () => m(3,1)
+        let y = () => m(1,5)
+        expect(x).toThrowError(/x.*out of range/i)
+        expect(y).toThrowError(/y.*out of range/i)
     })
 })

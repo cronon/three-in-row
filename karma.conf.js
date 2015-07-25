@@ -18,7 +18,6 @@ module.exports = function(config) {
       {pattern: 'build/js/libs.js', require: false},
       {pattern: 'src/js/**/*.js', require: false},
       {pattern: 'test/**/*.js', require: false},
-      'test/main.js'
     ],
 
 

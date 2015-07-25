@@ -48,3 +48,7 @@ gulp.task('test', function (done) {
     singleRun: true
   }, done).start();
 });
+
+gulp.task('watch', function(){
+  gulp.watch(['src/**/*.js', 'test/**/*.js'], ['test'])
+})
