@@ -19,5 +19,25 @@ function Matrix (width, height, defaultCb=function(){} ) {
     }
     m.width = width
     m.height = height
+    m.foldl = function(f, initialValue){
+        let memo = initialValue
+        array.forEach((row, y) => {
+            row.forEach((item, x) => {
+                memo = f(memo, item, {x,y})
+            })
+        })
+        return memo
+    }
+
+    m.toArray = function(){
+        return new Array(array)[0]
+    }
     return m
+}
+Matrix.fromArray = function(array){
+    let height = array.length
+    let width = array[0].length
+    return new Matrix(width, height, (x,y) => {
+        return array[y][x]
+    })
 }
