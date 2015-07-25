@@ -10,4 +10,13 @@ class Board extends Backbone.Model {
             })
         })
     }
+
+    step(){
+        let toRemove = this.findThreeInRow()
+        toRemove.forEach(gem => {
+            gem.remove()
+        })
+        this.fillGaps()
+    }
+
 }

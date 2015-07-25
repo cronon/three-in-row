@@ -30,13 +30,44 @@ describe("Board", () => {
         let arrayToGems = function(array){
             return Matrix.fromArray(array).map((kind, {x,y}) => new Gem({x,y,kind}))
         }
+        var b
+        beforeEach(()=>{
+            b = new Board(3,3,['ruby','emerald'])
+        })
         it('does nothing when nothing to do', () => {
-            let m = [['ruby','ruby','emerald'],['emerald','ruby','ruby']]
+            let m = [['ruby','ruby','emerald'],['emerald','ruby','ruby'],['ruby','ruby','emerald']]
             let g = arrayToGems(m)
-            let b = new Board(3,2,['ruby','emerald'])
             b.matrix = g.clone()
             b.step()
-            expect(b.matrix).toEqual(g)
+            expect(b.matrix.toArray()).toEqual(g.toArray())
+        })
+        it('destroys three in a horizontal row', () => {
+            let m = [['ruby','ruby','ruby'],
+                     ['emerald','ruby','emerald'],
+                     ['ruby','emerald','ruby']]
+            let g = arrayToGems(m)
+            g.map((gem) => spyOn(gem, 'remove'))
+            b.matrix = g
+
+            _.range(3).forEach(i => {
+                expect(b.matrix(i,0).remove).toHaveBeenCalled()
+                expect(b.matrix(i,1).remove).not.toHaveBeenCalled()
+                expect(b.matrix(i,2).remove).not.toHaveBeenCalled()
+            })
+        })
+        it('destroys three in a vertical row', () => {
+            let m = [['ruby','emerald','ruby'],
+                     ['ruby','ruby','emerald'],
+                     ['ruby','emerald','ruby']]
+            let g = arrayToGems(m)
+            g.map((gem) => spyOn(gem, 'remove'))
+            b.matrix = g
+
+            _.range(3).forEach(i => {
+                expect(b.matrix(0,i).remove).toHaveBeenCalled()
+                expect(b.matrix(1,i).remove).not.toHaveBeenCalled()
+                expect(b.matrix(2,i).remove).not.toHaveBeenCalled()
+            })
         })
     })
 })
