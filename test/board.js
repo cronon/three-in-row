@@ -1,7 +1,7 @@
 describe("Board", () => {
     it("creates", ()=>{
         let b = new Board(10,10)
-        expect(b instanceof Backbone.Model).toBe(true)
+        expect(b).toEqual(jasmine.any(Backbone.Model))
     })
     it('has width and height', () => {
         let b = new Board(10,5)
@@ -16,7 +16,9 @@ describe("Board", () => {
     it('fills matrix with Gems', () => {
         let m = (new Board(10,5)).matrix
         let cells = m.foldl((memo, gem) => memo.concat(gem), [])
-        expect(_.all(cells, (cell) => cell instanceof Gem)).toBe(true)
+        cells.map(cell => {
+            expect(cell).toEqual(jasmine.any(Gem))
+        })
     })
     it('uses provided gemSet', () => {
         let b = new Board(2,1,['ruby'])
@@ -25,15 +27,16 @@ describe("Board", () => {
     })
 
     describe("#step", () => {
-        let b
-        beforeEach(()=>{
-        })
+        let arrayToGems = function(array){
+            return Matrix.fromArray(array).map((kind, {x,y}) => new Gem({x,y,kind}))
+        }
         it('does nothing when nothing to do', () => {
             let m = [['ruby','ruby','emerald'],['emerald','ruby','ruby']]
-            let g = m.map((row) => row.map(Gem))
+            let g = arrayToGems(m)
             let b = new Board(3,2,['ruby','emerald'])
-            b.matrix = Matrix.fromArray(g)
-
+            b.matrix = g.clone()
+            b.step()
+            expect(b.matrix).toEqual(g)
         })
     })
 })
