@@ -121,4 +121,72 @@ describe("Matrix", () => {
             expect(m(0,0)).not.toEqual(m_(0,0)) 
         })
     })
+    describe("#findGroups(cmp)", () => {
+        it("finds horizontal row", () => {
+          let m = Matrix.fromArray([[0,0,0],[1,0,1]])
+          let actual = m.findGroups()
+          expect([[0,0,0]]).toEqual(actual)
+        })
+        it("finds vertical row", () => {
+          let m = Matrix.fromArray([[1,0],[1,1],[1,0]])
+          let actual = m.findGroups()
+          expect([[1,1,1]]).toEqual(actual)
+        })
+        it("find three or more in a row", () => {
+          let m = Matrix.fromArray([
+              [1,1,1,1,1],
+              [1,1,1,1,0],
+              [0,0,2,0,0]
+            ])
+          let actual = m.findGroups()
+          expect([[1,1,1,1,1],[1,1,1,1]]).toEqual(actual)
+        })
+        it("finds several rows", () => {
+          let m = Matrix.fromArray([
+              [1,1,1],
+              [0,2,0],
+              [1,1,1]
+            ])
+          let actual = m.findGroups()
+          expect([[1,1,1],[1,1,1]]).toEqual(actual)
+        })
+        it("finds vertical and horizontal rows", () => {
+          let m = Matrix.fromArray([
+              [1,1,1,0,1],
+              [0,2,1,0,0],
+              [1,0,1,1,0]
+            ])
+          let actual = m.findGroups()
+          expect([[1,1,1],[1,1,1]]).toEqual(actual)
+        })
+        it("returns the same objects", ()=> {
+          let o = new Object()
+          let m = Matrix.fromArray([
+              [o,o,o],
+              [1,2,3]
+            ])
+          let groups = m.findGroups()
+          expect(groups[0][0]).toBe(o)
+        })
+        it("accepts predicate", () => {
+          let m = Matrix.fromArray([
+              [2,4,6,1],
+              [1,3,5,7]
+            ])
+          let actual = m.findGroups((x,y) => x%2 == y%2)
+          expect([[2,4,6],[1,3,5,7]]).toEqual(actual)
+        })
+    })
+
+    describe("#swap([x1,y1],[x2,y2])", ()=>{
+        it("swaps two cells", () => {
+            let o1,o2
+            let m = [[o1,o2]] = [[Object(), Object()]]
+            m = Matrix.fromArray(m)
+            m.swap([0,0],[1,0])
+            let [[o2_, o1_]] = m.toArray()
+            expect(o1_).toBe(o1)
+            expect(o2_).toBe(o2)
+        })
+    })
 })

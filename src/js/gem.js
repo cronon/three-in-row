@@ -1,3 +1,5 @@
 class Gem extends Backbone.Model{
-    // remove(){}
+    remove(){
+        // console.log('removing')
+    }
 }
