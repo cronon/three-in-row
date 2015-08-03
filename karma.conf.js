@@ -16,6 +16,7 @@ module.exports = function(config) {
     files: [
       'bower_components/requirejs/require.js',
       {pattern: 'build/js/libs.js', require: false},
+      {pattern: 'build/js/templates.js', require: false},
       {pattern: 'src/js/**/*.js', require: false},
       {pattern: 'test/**/*.js', require: false},
     ],
