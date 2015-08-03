@@ -12,11 +12,11 @@ class Board extends Backbone.Model {
         })
     }
     step(){
-        let columns = _.groupBy(this.removeGroups(), gem => gem.get('y'))
-        console.log(columns)
-        columns.forEach(y => this.slideColumn(y))
-        let newGems = this.createNewGems()
-        this.pasteNewGems(newGems)
+        let columns = _.groupBy(this.removeGroups(), gem => gem.get('x'));
+        [].slice.call(columns).forEach(x => this.slideColumn(x))
+        let columnsHeight = this.columnsHeight()
+        let newGems = this.createNewGems(columnsHeight)
+        this.pasteNewGems(columnsHeight, newGems)
     }
     removeGroups(){
         let toRemove = this.matrix.findGroups((g1,g2) => {
@@ -42,18 +42,60 @@ class Board extends Backbone.Model {
             gem.set('y',y)
         })
     }
-    createNewGems(isGap = g => g.get('kind') == 'gap') {
+    columnsHeight(isGap = gem => gem.get('kind') == 'gap'){
+        let m = this.matrix
+        return _.range(m.width).reduce((memo,x) => {
+            return memo.concat(_.range(m.height).reduce((memo,y)=> {
+                if (isGap(m(x,y)) && y < memo){
+                    return y
+                } else {
+                    return memo
+                }
+            },m.height))
+        },[])
+    }
+    createNewGems(columnsHeight, isGap = g => g.get('kind') == 'gap') {
         let m = this.matrix
         return m.foldl((memo, item, {x,y}) => {
             if(isGap(item)){
                 return memo.concat(new Gem({
                     x: x,
-                    y: y + m.height,
+                    y: m.height + y - columnsHeight[x],
                     kind: _.sample(this.gemSet)
                 }))
             } else {
                 return memo
             }
         },[])
+    }
+    pasteNewGems(columnsHeight, newGems) {
+        let m = this.matrix
+        newGems.forEach(gem => {
+            let x = gem.get('x')
+            let y = gem.get('y')-m.height+columnsHeight[x]
+            m(x, y, gem)
+            gem.set('y',y)
+        })
+    }
+    swap([x1,y1],[x2,y2]) {
+        if(Math.abs(x1-x2) + Math.abs(y1-y2) != 1) {
+            throw Error(`Cannot swap (${x1},${y1}) with (${x2},${y2})`)
+        }
+        let m = this.matrix
+        m.swap([x1,y1],[x2,y2])
+        let groups = m.findGroups((g1,g2) => {
+            return g1.get('kind') == g2.get('kind')
+        })
+        if(groups.length == 0 ){
+            m.swap([x1,y1],[x2,y2])
+            return false
+        } else {
+            let g1 = m(x2,y2)
+            g1.set('x',x2); g1.set('y',y2)
+            let g2 = m(x1,y1)
+            g2.set('x',x1); g2.set('y',y1)
+            this.step()
+            return true
+        }
     }
 }

@@ -1,0 +1,1 @@
+move isGap functions to Gem class

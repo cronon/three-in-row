@@ -176,6 +176,11 @@ describe("Matrix", () => {
           let actual = m.findGroups((x,y) => x%2 == y%2)
           expect([[2,4,6],[1,3,5,7]]).toEqual(actual)
         })
+        it("returns empty array when nothing has been found", () => {
+            let m = Matrix.fromArray([1,2,3,4])
+            let actual = m.findGroups()
+            expect(actual).toEqual([])
+        })
     })
 
     describe("#swap([x1,y1],[x2,y2])", ()=>{

@@ -124,13 +124,22 @@ describe("Board", () => {
             expect(e2.get('y')).toEqual(0)
         })
     })
-    describe("#columnsHeight")
-    describe("#createNewGems(isGap(gem))", () => {
+    describe("#columnsHeight(isGap(gem))", () => {
+        it("calculates height of columns", () => {
+            let b = new Board(3,2,['ruby','emerald'])
+            let m = [['emerald','ruby','gap'],
+                     ['emerald','gap','gap']]
+            b.matrix = arrayToGems(m)
+            let heights = b.columnsHeight(gem => gem.get('kind') == 'gap')
+            expect(heights).toEqual([2,1,0])
+        })
+    })
+    describe("#createNewGems(columsHeight, isGap(gem))", () => {
         it("creates new gems", () => {
             let b = new Board(3,1,['ruby','emerald'])
             let m = [['emerald','gap','gap']]
             b.matrix = arrayToGems(m)
-            let [g1, g2] = b.createNewGems(gem => gem.get('kind') == 'gap')
+            let [g1, g2] = b.createNewGems([1,0,0], gem => gem.get('kind') == 'gap')
             expect(g1).toEqual(jasmine.any(Gem))
             expect(g2).toEqual(jasmine.any(Gem))
         })
@@ -138,7 +147,7 @@ describe("Board", () => {
             let b = new Board(3,1,['ruby','emerald'])
             let m = [['emerald','gap','gap']]
             b.matrix = arrayToGems(m)
-            let [g1, g2] = b.createNewGems(gem => gem.get('kind') == 'gap')
+            let [g1, g2] = b.createNewGems([1,0,0], gem => gem.get('kind') == 'gap')
             expect(['ruby','emerald']).toContain(g1.get('kind'))
             expect(['ruby','emerald']).toContain(g2.get('kind'))
         })
@@ -146,17 +155,87 @@ describe("Board", () => {
             let b = new Board(1,3,['ruby','emerald'])
             let m = [['emerald'],['gap'],['gap']]
             b.matrix = arrayToGems(m)
-            let [g1, g2] = b.createNewGems(gem => gem.get('kind') == 'gap')
+            let [g1, g2] = b.createNewGems([1], gem => gem.get('kind') == 'gap')
             expect(g1.get('y')).toEqual(3)
             expect(g2.get('y')).toEqual(4)
         })
     })
-    describe("#pasteNewGems(newGems)", () => {
-        it("paste gems on their new place",() => {
-            let b = new Board(1,3,['ruby','emerald'])
-            let m = [['emerald'],['gap'],['gap']]
-            b.matrix = arrayToGems(m)
-            let n = [['emerald',0,,'ruby']]
+    describe("#pasteNewGems(columnsHeight, newGems)", () => {
+        var b, m, g3, g4
+        beforeEach(() => {
+            b = new Board(1,3,['ruby','emerald'])
+            m = [['emerald'],['gap'],['gap']]
+            b.matrix = arrayToGems(m);
+            [g3, g4]= [['emerald',0,3],['ruby',0,4]].map(([kind,x,y]) => {
+                return new Gem({kind,x,y}) 
+            })
+            b.pasteNewGems([1], [g3,g4])
+        })
+        it("move gems on their new place",() => {
+            expect(g3.get('y')).toEqual(1)
+            expect(g4.get('y')).toEqual(2)
+        })
+        it("pastes new gems into matrix", () => {
+            expect(b.matrix(0,1)).toBe(g3)
+            expect(b.matrix(0,2)).toBe(g4)
+        })
+    })
+    describe("#swap([x,y],[x,y])", () => {
+        describe("impossible swap",() => {
+            let b
+            beforeEach(()=>{
+                b = new Board(3,2,['ruby','emerald'])
+                b.matrix = arrayToGems([
+                    ['ruby','emerald','ruby'],
+                    ['ruby','emerald','ruby'],
+                    ])
+            })
+            it("returns false", () => {
+                let result = b.swap([0,0],[0,1])
+                expect(result).toEqual(false)
+            })
+            it("doesn't swap", () => {
+                let g0 = b.matrix(0,0)
+                let g1 = b.matrix(0,1)
+                b.swap([0,0],[0,1])
+                expect(g0.get('y')).toEqual(0)
+                expect(g1.get('y')).toEqual(1)
+            })
+        })
+        describe("possible swap", () => {
+            let b
+            beforeEach(()=>{
+                b = new Board(3,2,['ruby','emerald'])
+                b.matrix = arrayToGems([
+                    ['ruby','emerald','ruby'],
+                    ['emerald','ruby','ruby'],
+                    ])
+            })
+            it("returns true", () => {
+                let result = b.swap([1,0],[1,1])
+                expect(result).toEqual(true)
+            })
+            it("swaps gems", () => {
+                let g0 = b.matrix(1,0)
+                let g1 = b.matrix(1,1)
+                b.swap([1,0],[1,1])
+                expect(g0.get('y')).toEqual(1)
+                expect(g1.get('y')).toEqual(0)
+            })
+            it("calls step method", () => {
+                spyOn(b,'step')
+                b.swap([1,0],[1,1])
+                expect(b.step).toHaveBeenCalled()
+            })
+        })
+        it("throws an error when incorrect swap", () => {
+            let b = new Board(3,3,['ruby','emerald'])
+            let swap1 = () => b.swap([0,0],[1,1])
+            let swap2 = () => b.swap([0,0],[0,2])
+            let swap3 = () => b.swap([0,0],[0,0])
+            expect(swap1).toThrowError(/Cannot swap/)
+            expect(swap2).toThrowError(/Cannot swap/)
+            expect(swap3).toThrowError(/Cannot swap/)
         })
     })
 })
