@@ -1,41 +1,10 @@
-"use strict";
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-var GemView = (function (_Backbone$View) {
-    _inherits(GemView, _Backbone$View);
-
-    function GemView(options) {
-        _classCallCheck(this, GemView);
-
-        _get(Object.getPrototypeOf(GemView.prototype), "constructor", this).call(this, options);
-        this.template = window.Templates.gem;
-    }
-
-    _createClass(GemView, [{
-        key: "render",
-        value: function render() {
-            // console.log(this.model)
-            this.el = this.template(this.model.attributes);
-            return this;
-        }
-    }]);
-
-    return GemView;
-})(Backbone.View);
 'use strict';
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x5, _x6, _x7) { var _again = true; _function: while (_again) { var object = _x5, property = _x6, receiver = _x7; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x5 = parent; _x6 = property; _x7 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
@@ -77,7 +46,7 @@ var Board = (function (_Backbone$Model) {
             var columns = _.groupBy(this.removeGroups(), function (gem) {
                 return gem.get('x');
             });
-            [].slice.call(columns).forEach(function (x) {
+            _.keys(columns).forEach(function (x) {
                 return _this.slideColumn(x);
             });
             var columnsHeight = this.columnsHeight();
@@ -99,37 +68,24 @@ var Board = (function (_Backbone$Model) {
     }, {
         key: 'slideColumn',
         value: function slideColumn(x) {
-            var isGap = arguments.length <= 1 || arguments[1] === undefined ? function (g) {
-                return !g;
-            } : arguments[1];
-
             var m = this.matrix;
             for (var i = 0; i < m.height - 1; i++) {
                 for (var j = 0; j < m.height - 1; j++) {
-                    if (isGap(m(x, j))) {
+                    if (m(x, j).isGap()) {
                         m.swap([x, j], [x, j + 1]);
+                        m(x, j + 1).set('y', j + 1);
+                        m(x, j).set('y', j);
                     }
                 }
             }
-            m.map(function (gem, _ref2) {
-                var x = _ref2.x;
-                var y = _ref2.y;
-
-                gem.set('x', x);
-                gem.set('y', y);
-            });
         }
     }, {
         key: 'columnsHeight',
         value: function columnsHeight() {
-            var isGap = arguments.length <= 0 || arguments[0] === undefined ? function (gem) {
-                return gem.get('kind') == 'gap';
-            } : arguments[0];
-
             var m = this.matrix;
             return _.range(m.width).reduce(function (memo, x) {
                 return memo.concat(_.range(m.height).reduce(function (memo, y) {
-                    if (isGap(m(x, y)) && y < memo) {
+                    if (m(x, y).isGap() && y < memo) {
                         return y;
                     } else {
                         return memo;
@@ -142,16 +98,12 @@ var Board = (function (_Backbone$Model) {
         value: function createNewGems(columnsHeight) {
             var _this2 = this;
 
-            var isGap = arguments.length <= 1 || arguments[1] === undefined ? function (g) {
-                return g.get('kind') == 'gap';
-            } : arguments[1];
-
             var m = this.matrix;
-            return m.foldl(function (memo, item, _ref3) {
-                var x = _ref3.x;
-                var y = _ref3.y;
+            return m.foldl(function (memo, item, _ref2) {
+                var x = _ref2.x;
+                var y = _ref2.y;
 
-                if (isGap(item)) {
+                if (item.isGap()) {
                     return memo.concat(new Gem({
                         x: x,
                         y: m.height + y - columnsHeight[x],
@@ -175,19 +127,19 @@ var Board = (function (_Backbone$Model) {
         }
     }, {
         key: 'swap',
-        value: function swap(_ref4, _ref5) {
+        value: function swap(_ref3, _ref4) {
+            var _ref32 = _slicedToArray(_ref3, 2);
+
+            var x1 = _ref32[0];
+            var y1 = _ref32[1];
+
             var _ref42 = _slicedToArray(_ref4, 2);
 
-            var x1 = _ref42[0];
-            var y1 = _ref42[1];
-
-            var _ref52 = _slicedToArray(_ref5, 2);
-
-            var x2 = _ref52[0];
-            var y2 = _ref52[1];
+            var x2 = _ref42[0];
+            var y2 = _ref42[1];
 
             if (Math.abs(x1 - x2) + Math.abs(y1 - y2) != 1) {
-                throw Error('Cannot swap (' + x1 + ',' + y1 + ') with (' + x2 + ',' + y2 + ')');
+                return null;
             }
             var m = this.matrix;
             m.swap([x1, y1], [x2, y2]);
@@ -198,11 +150,6 @@ var Board = (function (_Backbone$Model) {
                 m.swap([x1, y1], [x2, y2]);
                 return false;
             } else {
-                var g1 = m(x2, y2);
-                g1.set('x', x2);g1.set('y', y2);
-                var g2 = m(x1, y1);
-                g2.set('x', x1);g2.set('y', y1);
-                this.step();
                 return true;
             }
         }
@@ -226,8 +173,14 @@ var BoardView = (function (_Backbone$View) {
     function BoardView(options) {
         _classCallCheck(this, BoardView);
 
+        _.defaults(options, {
+            events: {
+                'focus .gem': 'focusGem'
+            },
+            el: $("#board")[0]
+        });
+
         _get(Object.getPrototypeOf(BoardView.prototype), 'constructor', this).call(this, options);
-        this.$el = $('#board');
         this.template = window.Templates.board;
     }
 
@@ -243,19 +196,68 @@ var BoardView = (function (_Backbone$View) {
             });
             return this;
         }
+    }, {
+        key: 'focusGem',
+        value: function focusGem(e) {
+            var _this2 = this;
+
+            if (this.focused) {
+                (function () {
+                    var m = _this2.model.matrix;
+                    var _e$currentTarget$dataset = e.currentTarget.dataset;
+                    var x1 = _e$currentTarget$dataset.x;
+                    var y1 = _e$currentTarget$dataset.y;
+                    var _focused$dataset = _this2.focused.dataset;
+                    var x2 = _focused$dataset.x;
+                    var y2 = _focused$dataset.y;
+
+                    var g1 = m(x1, y1),
+                        g2 = m(x2, y2);
+                    var swap = _this2.model.swap([x1, y1], [x2, y2]);
+                    if (swap === null) {
+                        _this2.focused = e.currentTarget;
+                    } else if (swap === false) {
+                        g1.set('x', x2);g1.set('y', y2);
+                        g2.set('x', x1);g2.set('y', y1);
+                        setTimeout(function () {
+                            g1.set('x', x1);g1.set('y', y1);
+                            g2.set('x', x2);g2.set('y', y2);
+                        }, 200);
+                        e.currentTarget.blur();
+                        _this2.focused = false;
+                    } else if (swap === true) {
+                        g1.set('x', x2);g1.set('y', y2);
+                        g2.set('x', x1);g2.set('y', y1);
+                        while (_this2.loop()) {}
+                        e.currentTarget.blur();
+                        _this2.focused = false;
+                    }
+                })();
+            } else {
+                this.focused = e.currentTarget;
+            }
+        }
+    }, {
+        key: 'loop',
+        value: function loop() {
+            var columns = new Set(this.model.removeGroups().map(function (gem) {
+                return gem.get('x');
+            }));
+            return false;
+        }
     }]);
 
     return BoardView;
 })(Backbone.View);
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 var Gem = (function (_Backbone$Model) {
     _inherits(Gem, _Backbone$Model);
@@ -263,16 +265,62 @@ var Gem = (function (_Backbone$Model) {
     function Gem(options) {
         _classCallCheck(this, Gem);
 
-        _get(Object.getPrototypeOf(Gem.prototype), "constructor", this).call(this, options);
+        _get(Object.getPrototypeOf(Gem.prototype), 'constructor', this).call(this, options);
     }
 
     _createClass(Gem, [{
-        key: "remove",
-        value: function remove() {}
+        key: 'remove',
+        value: function remove() {
+            this.set('kind', 'gap');
+        }
+    }, {
+        key: 'isGap',
+        value: function isGap() {
+            return this.get('kind') == 'gap';
+        }
     }]);
 
     return Gem;
 })(Backbone.Model);
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+var GemView = (function (_Backbone$View) {
+    _inherits(GemView, _Backbone$View);
+
+    function GemView(options) {
+        _classCallCheck(this, GemView);
+
+        _get(Object.getPrototypeOf(GemView.prototype), 'constructor', this).call(this, options);
+        this.$el.attr('tabindex', 0);
+        this.$el.html('' + this.model.get('x') + this.model.get('y'));
+        this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.model, 'destroy', this.remove);
+    }
+
+    _createClass(GemView, [{
+        key: 'render',
+        value: function render() {
+            var _model$attributes = this.model.attributes;
+            var x = _model$attributes.x;
+            var y = _model$attributes.y;
+            var kind = _model$attributes.kind;
+
+            var classes = 'col-' + x + ' row-' + y + ' ' + kind + ' gem';
+            this.$el.attr('class', classes).attr('data-x', this.model.get('x')).attr('data-y', this.model.get('y'));
+            return this;
+        }
+    }]);
+
+    return GemView;
+})(Backbone.View);
 "use strict";
 
 function newArray(size) {
@@ -284,7 +332,8 @@ $(function () {
     var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
     var board = new Board(8, 8, gemSet);
     var boardView = new BoardView({ model: board });
-    window.B = boardView;
+    window.BV = boardView;
+    window.B = board;
     boardView.render();
 });
 "use strict";

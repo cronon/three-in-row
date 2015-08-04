@@ -14,7 +14,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'bower_components/requirejs/require.js',
       {pattern: 'build/js/libs.js', require: false},
       {pattern: 'build/js/templates.js', require: false},
       {pattern: 'src/js/**/*.js', require: false},

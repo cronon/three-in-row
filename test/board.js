@@ -99,7 +99,7 @@ describe("Board", () => {
             let b = new Board(1,3,['ruby','emerald', 'gap'])
             let m = [['ruby'],['gap'],['emerald']]
             b.matrix = arrayToGems(m)
-            b.slideColumn(0, g => g.get('kind') == 'gap')
+            b.slideColumn(0)
             let actual = b.matrix.map(g => g.get('kind')).toArray()
             expect(actual).toEqual([['ruby'],['emerald'],['gap']])
         })
@@ -107,7 +107,7 @@ describe("Board", () => {
             let b = new Board(1,3,['ruby','emerald', 'gap'])
             let m = [['gap'],['gap'],['emerald']]
             b.matrix = arrayToGems(m)
-            b.slideColumn(0, g => g.get('kind') == 'gap')
+            b.slideColumn(0)
             let actual = b.matrix.map(g => g.get('kind')).toArray()
             expect(actual).toEqual([['emerald'],['gap'],['gap']])
         })
@@ -118,7 +118,7 @@ describe("Board", () => {
             let g0 = b.matrix(0,0)
             let g1 = b.matrix(0,1)
             let e2 = b.matrix(0,2)
-            b.slideColumn(0, g => g.get('kind') == 'gap')
+            b.slideColumn(0)
             expect(g0.get('y')).toEqual(1)
             expect(g1.get('y')).toEqual(2)
             expect(e2.get('y')).toEqual(0)
@@ -130,7 +130,7 @@ describe("Board", () => {
             let m = [['emerald','ruby','gap'],
                      ['emerald','gap','gap']]
             b.matrix = arrayToGems(m)
-            let heights = b.columnsHeight(gem => gem.get('kind') == 'gap')
+            let heights = b.columnsHeight()
             expect(heights).toEqual([2,1,0])
         })
     })
@@ -139,7 +139,7 @@ describe("Board", () => {
             let b = new Board(3,1,['ruby','emerald'])
             let m = [['emerald','gap','gap']]
             b.matrix = arrayToGems(m)
-            let [g1, g2] = b.createNewGems([1,0,0], gem => gem.get('kind') == 'gap')
+            let [g1, g2] = b.createNewGems([1,0,0])
             expect(g1).toEqual(jasmine.any(Gem))
             expect(g2).toEqual(jasmine.any(Gem))
         })
@@ -147,7 +147,7 @@ describe("Board", () => {
             let b = new Board(3,1,['ruby','emerald'])
             let m = [['emerald','gap','gap']]
             b.matrix = arrayToGems(m)
-            let [g1, g2] = b.createNewGems([1,0,0], gem => gem.get('kind') == 'gap')
+            let [g1, g2] = b.createNewGems([1,0,0])
             expect(['ruby','emerald']).toContain(g1.get('kind'))
             expect(['ruby','emerald']).toContain(g2.get('kind'))
         })
@@ -155,7 +155,7 @@ describe("Board", () => {
             let b = new Board(1,3,['ruby','emerald'])
             let m = [['emerald'],['gap'],['gap']]
             b.matrix = arrayToGems(m)
-            let [g1, g2] = b.createNewGems([1], gem => gem.get('kind') == 'gap')
+            let [g1, g2] = b.createNewGems([1])
             expect(g1.get('y')).toEqual(3)
             expect(g2.get('y')).toEqual(4)
         })
@@ -219,23 +219,18 @@ describe("Board", () => {
                 let g0 = b.matrix(1,0)
                 let g1 = b.matrix(1,1)
                 b.swap([1,0],[1,1])
-                expect(g0.get('y')).toEqual(1)
-                expect(g1.get('y')).toEqual(0)
-            })
-            it("calls step method", () => {
-                spyOn(b,'step')
-                b.swap([1,0],[1,1])
-                expect(b.step).toHaveBeenCalled()
+                expect(g0).toBe(b.matrix(1,1))
+                expect(g1).toBe(b.matrix(1,0))
             })
         })
-        it("throws an error when incorrect swap", () => {
+        it("returns null when incorrect swap", () => {
             let b = new Board(3,3,['ruby','emerald'])
             let swap1 = () => b.swap([0,0],[1,1])
             let swap2 = () => b.swap([0,0],[0,2])
             let swap3 = () => b.swap([0,0],[0,0])
-            expect(swap1).toThrowError(/Cannot swap/)
-            expect(swap2).toThrowError(/Cannot swap/)
-            expect(swap3).toThrowError(/Cannot swap/)
+            expect(swap1()).toEqual(null)
+            expect(swap2()).toEqual(null)
+            expect(swap3()).toEqual(null)
         })
     })
 })

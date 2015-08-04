@@ -90,5 +90,8 @@ gulp.task('sass', function () {
 });
 
 gulp.task('watch', function(){
-  gulp.watch(['src/**/*'], ['default'])
+  gulp.watch(['src/jade-static/*'], ['jade-static'])
+  gulp.watch(['src/jade-client/*'], ['jade-client'])
+  gulp.watch(['src/js/*'], ['babel'])
+  gulp.watch(['src/scss/*'], ['sass'])
 })

@@ -13,7 +13,7 @@ class Board extends Backbone.Model {
     }
     step(){
         let columns = _.groupBy(this.removeGroups(), gem => gem.get('x'));
-        [].slice.call(columns).forEach(x => this.slideColumn(x))
+        _.keys(columns).forEach(x => this.slideColumn(x))
         let columnsHeight = this.columnsHeight()
         let newGems = this.createNewGems(columnsHeight)
         this.pasteNewGems(columnsHeight, newGems)
@@ -28,25 +28,23 @@ class Board extends Backbone.Model {
         })
         return toRemove
     }
-    slideColumn(x, isGap = g => !g) {
+    slideColumn(x) {
         let m = this.matrix
         for(var i=0; i<m.height-1; i++){
             for(var j=0; j<m.height-1; j++){
-                if(isGap(m(x,j))){
+                if(m(x,j).isGap()){
                     m.swap([x,j],[x,j+1])
+                    m(x,j+1).set('y',j+1)
+                    m(x,j).set('y',j)
                 }
             }
         }
-        m.map((gem,{x,y}) => {
-            gem.set('x',x)
-            gem.set('y',y)
-        })
     }
-    columnsHeight(isGap = gem => gem.get('kind') == 'gap'){
+    columnsHeight(){
         let m = this.matrix
         return _.range(m.width).reduce((memo,x) => {
             return memo.concat(_.range(m.height).reduce((memo,y)=> {
-                if (isGap(m(x,y)) && y < memo){
+                if (m(x,y).isGap() && y < memo){
                     return y
                 } else {
                     return memo
@@ -54,10 +52,10 @@ class Board extends Backbone.Model {
             },m.height))
         },[])
     }
-    createNewGems(columnsHeight, isGap = g => g.get('kind') == 'gap') {
+    createNewGems(columnsHeight) {
         let m = this.matrix
         return m.foldl((memo, item, {x,y}) => {
-            if(isGap(item)){
+            if(item.isGap()){
                 return memo.concat(new Gem({
                     x: x,
                     y: m.height + y - columnsHeight[x],
@@ -79,7 +77,7 @@ class Board extends Backbone.Model {
     }
     swap([x1,y1],[x2,y2]) {
         if(Math.abs(x1-x2) + Math.abs(y1-y2) != 1) {
-            throw Error(`Cannot swap (${x1},${y1}) with (${x2},${y2})`)
+            return null
         }
         let m = this.matrix
         m.swap([x1,y1],[x2,y2])
@@ -90,11 +88,6 @@ class Board extends Backbone.Model {
             m.swap([x1,y1],[x2,y2])
             return false
         } else {
-            let g1 = m(x2,y2)
-            g1.set('x',x2); g1.set('y',y2)
-            let g2 = m(x1,y1)
-            g2.set('x',x1); g2.set('y',y1)
-            this.step()
             return true
         }
     }
