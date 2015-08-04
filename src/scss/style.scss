@@ -1,0 +1,50 @@
+$side: 500px;
+$cell: $side/8;
+.gem {
+    display: inline-block;
+    width: $cell;
+    height: $cell;
+    position: absolute;
+    transition: transform 250ms;
+
+    &::before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0.7;
+        position: absolute;
+        font-size: 46px;
+        text-align: center;
+    }
+
+    &:focus {
+        outline: 2px solid green;
+    }
+}
+.amber::before   { content:"A"; background: yellow; }
+.amethyst::before{ content:"A"; background: fuchsia; }
+.diamond::before { content:"D"; background: white; }
+.emerald::before { content:"E"; background: lime; }
+.ruby::before    { content:"R"; background: red; }
+.sapphire::before{ content:"S"; background: blue; }
+.topaz::before   { content:"T"; background: aqua; }
+#board {
+    position: relative;
+    width: $side;
+    height: $side;
+    margin: 0 auto;
+    &::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+
+@for $x from 0 through 7 {
+    @for $y from 0 through 7 {
+        .col-#{$x}.row-#{$y} {
+            transform: translate($cell*$x, $side - $cell*($y+1))
+        }
+    }
+}

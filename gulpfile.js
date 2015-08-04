@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 
-gulp.task('default', ['jade-client', 'jade-static', 'bowerFiles'], function() {
-  console.log('Gulp runs!')
+gulp.task('default', ['jade-client', 'jade-static', 'bowerFiles', 'babel', 'sass'], function() {
+
 });
 
 var jade = require('gulp-jade');
@@ -26,8 +26,8 @@ function modify() {
     }
     var funcName = path.basename(file.path, '.js');
     var from = 'function template(locals) {';
-    var to = 'window.templates = window.templates || {}\n'
-    to +=  'templates.'+funcName+' = function (locals) {';
+    var to = 'window.Templates = window.Templates || {}\n'
+    to +=  'Templates.'+funcName+' = function (locals) {';
     var contents = file.contents.toString().replace(from, to);
     file.contents = new Buffer(contents);
     this.push(file);
@@ -67,7 +67,8 @@ gulp.task('babel', function () {
         .pipe(babel({
           sourceMaps: true,
         }))
-        .pipe(gulp.dest('build'));
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('build/js'));
 });
 
 var Server = require('karma').Server;
@@ -81,6 +82,13 @@ gulp.task('test', function (done) {
   }, done).start();
 });
 
+var sass = require('gulp-sass');
+gulp.task('sass', function () {
+  gulp.src('src/scss/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('build/css'));
+});
+
 gulp.task('watch', function(){
-  gulp.watch(['src/**/*.js'], ['default'])
+  gulp.watch(['src/**/*'], ['default'])
 })

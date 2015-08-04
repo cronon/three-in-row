@@ -3,7 +3,7 @@ class Board extends Backbone.Model {
         this.width = width
         this.height = height
         this.gemSet = gemSet
-        this.matrix = new Matrix(width, height, (x,y) => {
+        this.matrix = new Matrix(width, height, ({x,y}) => {
             return new Gem({
                 x,
                 y,
