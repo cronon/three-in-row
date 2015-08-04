@@ -103,13 +103,13 @@ describe("Board", () => {
             let actual = b.matrix.map(g => g.get('kind')).toArray()
             expect(actual).toEqual([['ruby'],['emerald'],['gap']])
         })
-        it("handle svereal gaps", () => {
+        it("handle several gaps", () => {
             let b = new Board(1,3,['ruby','emerald', 'gap'])
-            let m = [['gap'],['gap'],['emerald']]
+            let m = [['ruby'],['gap'],['gap'],['emerald']]
             b.matrix = arrayToGems(m)
             b.slideColumn(0)
             let actual = b.matrix.map(g => g.get('kind')).toArray()
-            expect(actual).toEqual([['emerald'],['gap'],['gap']])
+            expect(actual).toEqual([['ruby'],['emerald'],['gap'],['gap']])
         })
         it("updates gemset", () => {
             let b = new Board(1,3,['ruby','emerald', 'gap'])
@@ -231,6 +231,126 @@ describe("Board", () => {
             expect(swap1()).toEqual(null)
             expect(swap2()).toEqual(null)
             expect(swap3()).toEqual(null)
+        })
+    })
+    describe("#hasSwap", () => {
+        it("finds specific horizontal swap", () => {
+            let b = new Board(3,2,['r','e'])
+            let m = arrayToGems([
+                    ['r','e','r'],
+                    ['e','r','r']
+                ])
+            let swap = {
+                stones: [
+                    {dx: 0, dy: 0},
+                    {dx: 2, dy: 0}
+                ],
+                possibilities: [
+                    {dx: 1, dy: 1},
+                    {dx: 1, dy: -1}
+                ]
+            }
+            b.matrix = m
+            expect(b.hasSwap(swap)).toBe(true)
+        })
+        it("finds specific vertical swap", () => {
+            let b = new Board(2,3,['r','e'])
+            let m = arrayToGems([
+                    ['r','e'],
+                    ['e','r'],
+                    ['r','r']
+                ])
+            let swap = {
+                stones: [
+                    {dx: 0, dy: 1},
+                    {dx: 0, dy: 2}
+                ],
+                possibilities: [
+                    {dx: -1, dy: 0},
+                    {dx: 0, dy: -1},
+                    {dx: 1, dy: 0},
+                ]
+            }
+            b.matrix = m
+            expect(b.hasSwap(swap)).toBe(true)
+        })
+        it("returns false when find nothing", () => {
+            let b = new Board(2,3,['r','e'])
+            let m = arrayToGems([
+                    ['e','r'],
+                    ['e','e'],
+                    ['r','r']
+                ])
+            let swap = {
+                stones: [
+                    {dx: 0, dy: 0},
+                    {dx: 0, dy: 1}
+                ],
+                possibilities: [
+                    {dx: -1, dy: -1},
+                    {dx: 0, dy: -2},
+                    {dx: 1, dy: -1},
+                ]
+            }
+            b.matrix = m
+            expect(b.hasSwap(swap)).toBe(false)
+        })
+    })
+    describe("#swapsPossibility", () => {
+        let b
+        beforeEach(() => {
+            b = new Board(3,3,['0','1','2','3'])
+        })
+        describe("horizontal", () => {
+            it(".XX", () => {
+                let m = arrayToGems([
+                    '011'.split(''),
+                    '123'.split(''),
+                    '031'.split(''),
+                    ])
+                b.matrix = m 
+                expect(b.swapsPossibility()).toBe(true)
+            })
+            it("X.X", () => {
+                let m = arrayToGems([
+                    '101'.split(''),
+                    '212'.split(''),
+                    '301'.split(''),
+                    ])
+                b.matrix = m 
+                expect(b.swapsPossibility()).toBe(true)
+            })
+        })
+        describe("vertical", () => {
+            it(".XX", () => {
+                let m = arrayToGems([
+                    '103'.split(''),
+                    '021'.split(''),
+                    '033'.split(''),
+                    ])
+                b.matrix = m 
+                expect(b.swapsPossibility()).toBe(true)
+            })
+            it("X.X", () => {
+                let m = arrayToGems([
+                    '123'.split(''),
+                    '013'.split(''),
+                    '121'.split(''),
+                    ])
+                b.matrix = m 
+                expect(b.swapsPossibility()).toBe(true)
+            })
+        })
+        describe("none", () => {
+            it('returns false', () => {
+                let m = arrayToGems([
+                        '123'.split(''),
+                        '030'.split(''),
+                        '121'.split(''),
+                    ])
+                b.matrix = m 
+                expect(b.swapsPossibility()).toBe(false)
+            })
         })
     })
 })

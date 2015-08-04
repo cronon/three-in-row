@@ -2,9 +2,8 @@ class GemView extends Backbone.View {
     constructor(options) {
         super(options)
         this.$el.attr('tabindex',0)
-        this.$el.html(''+this.model.get('x')+this.model.get('y'))
         this.listenTo(this.model, 'change', this.render)
-        this.listenTo(this.model, 'destroy', this.remove)
+        this.listenTo(this.model, 'destroy', this.onDestroy)
     }
     render () {
         let {x,y,kind} = this.model.attributes
@@ -13,5 +12,9 @@ class GemView extends Backbone.View {
             .attr('data-x',this.model.get('x'))
             .attr('data-y',this.model.get('y'))
         return this
+    }
+    onDestroy () {
+        this.$el.remove()
+        this.destroy
     }
 }

@@ -194,4 +194,22 @@ describe("Matrix", () => {
             expect(o2_).toBe(o2)
         })
     })
+
+    describe("#safe", () => {
+        let m, sm, out
+        beforeEach(() => {
+          m = Matrix.fromArray([
+              [1,2,3],
+              [4,5,6]
+            ])
+          sm = m.safe
+          out = () => sm(1,-1)
+        })
+        it("doesn't throw an error when out of range", () => {
+          expect(out).not.toThrowError()
+        })
+        it("returns null when out of range", () => {
+          expect(sm(1,10)).toBe(null)
+        })
+      })
 })

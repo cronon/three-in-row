@@ -9,5 +9,4 @@ describe("Helpres",() => {
       expect(a).toEqual([0,1,2])
     })
   })
-  
 })

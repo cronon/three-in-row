@@ -21,6 +21,11 @@ $cell: $side/8;
     &:focus {
         outline: 2px solid green;
     }
+    &.gap::before {
+            background: black;
+            opacity: 1;
+            transition: background 250ms;
+    }
 }
 .amber::before   { content:"A"; background: yellow; }
 .amethyst::before{ content:"A"; background: fuchsia; }
@@ -42,7 +47,7 @@ $cell: $side/8;
 }
 
 @for $x from 0 through 7 {
-    @for $y from 0 through 7 {
+    @for $y from 0 through 15 {
         .col-#{$x}.row-#{$y} {
             transform: translate($cell*$x, $side - $cell*($y+1))
         }

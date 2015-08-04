@@ -89,7 +89,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('build/css'));
 });
 
-gulp.task('watch', function(){
+gulp.task('watch', ['jade-static', 'jade-client', 'babel', 'sass'], function(){
   gulp.watch(['src/jade-static/*'], ['jade-static'])
   gulp.watch(['src/jade-client/*'], ['jade-client'])
   gulp.watch(['src/js/*'], ['babel'])

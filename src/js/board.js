@@ -32,7 +32,7 @@ class Board extends Backbone.Model {
         let m = this.matrix
         for(var i=0; i<m.height-1; i++){
             for(var j=0; j<m.height-1; j++){
-                if(m(x,j).isGap()){
+                if(m(x,j).isGap() && !m(x,j+1).isGap() ){
                     m.swap([x,j],[x,j+1])
                     m(x,j+1).set('y',j+1)
                     m(x,j).set('y',j)
@@ -52,7 +52,7 @@ class Board extends Backbone.Model {
             },m.height))
         },[])
     }
-    createNewGems(columnsHeight) {
+    createNewGems(columnsHeight = this.columnsHeight()) {
         let m = this.matrix
         return m.foldl((memo, item, {x,y}) => {
             if(item.isGap()){
@@ -66,11 +66,12 @@ class Board extends Backbone.Model {
             }
         },[])
     }
-    pasteNewGems(columnsHeight, newGems) {
+    pasteNewGems(columnsHeight = this.columnsHeight(), newGems) {
         let m = this.matrix
         newGems.forEach(gem => {
             let x = gem.get('x')
             let y = gem.get('y')-m.height+columnsHeight[x]
+            m(x, y).destroy()
             m(x, y, gem)
             gem.set('y',y)
         })
@@ -90,5 +91,99 @@ class Board extends Backbone.Model {
         } else {
             return true
         }
+    }
+    hasSwap({stones, possibilities}) {
+        let m = this.matrix
+        let sm = m.safe
+        let result = false
+        for( let y = 0; y < m.height; y++) {
+            for(let x = 0; x < m.width; x++){
+                let kinds = _.compact(stones.map(({dx, dy}) => {
+                    return sm(x+dx, y+dy) && sm(x+dx, y+dy).get('kind')
+                }))
+                let pKinds = _.compact(possibilities.map( ({dx,dy}) => {
+                    return sm(x+dx, y+dy) && sm(x+dx, y+dy).get('kind')
+                }))
+                result = result ||
+                    kinds.length == stones.length && 
+                    _.all(kinds, kind => kind == kinds[0]) && 
+                    _.some(pKinds, kind => kind == kinds[0])
+            }
+        }
+        return result
+    }
+    swapsPossibility() {
+        let SWAPS = []
+        // left horizontal .XX
+        SWAPS.push({
+            stones: [
+                {dx: 1, dy: 0},
+                {dx: 2, dy: 0}
+            ],
+            possibilities: [
+                {dx: 0, dy: 1},
+                {dx: 0, dy: -1},
+                {dx: -1, dy: 0},
+            ]
+        })
+        // right horizontal XX.
+        SWAPS.push({
+            stones: [
+                {dx: 0, dy: 0},
+                {dx: 1, dy: 0}
+            ],
+            possibilities: [
+                {dx: 2, dy: 1},
+                {dx: 2, dy: -1},
+                {dx: 3, dy: 0},
+            ]
+        })
+        // center horizontal X.X
+        SWAPS.push({
+            stones: [
+                {dx: 0, dy: 0},
+                {dx: 2, dy: 0}
+            ],
+            possibilities: [
+                {dx: 1, dy: 1},
+                {dx: 1, dy: -1}
+            ]
+        })
+        // top vertical .XX
+        SWAPS.push({
+            stones: [
+                {dx: 0, dy: 1},
+                {dx: 0, dy: 2}
+            ],
+            possibilities: [
+                {dx: 0, dy: -1},
+                {dx: 1, dy: 0},
+                {dx: -1, dy: 0},
+            ]
+        })
+        // bottom vertical .XX.
+        SWAPS.push({
+            stones: [
+                {dx: 0, dy: 0},
+                {dx: 0, dy: 1}
+            ],
+            possibilities: [
+                {dx: 0, dy: 3},
+                {dx: 1, dy: 2},
+                {dx: -1, dy: 2}
+            ]
+        })
+        // center vertical X.X
+        SWAPS.push({
+            stones: [
+                {dx: 0, dy: 0},
+                {dx: 0, dy: 2}
+            ],
+            possibilities: [
+                {dx: 1, dy: 1},
+                {dx: -1, dy: 1}
+            ]
+        })
+        return _.any(SWAPS.map(s => this.hasSwap(s)))
     }
 }

@@ -21,6 +21,7 @@ class BoardView extends Backbone.View {
     }
 
     focusGem (e) {
+        console.log(this.focused)
         if (this.focused) {
             let m = this.model.matrix
             let {x: x1, y: y1} = e.currentTarget.dataset
@@ -35,13 +36,13 @@ class BoardView extends Backbone.View {
                 setTimeout(() => {
                     g1.set('x',x1); g1.set('y',y1)
                     g2.set('x',x2); g2.set('y',y2)
-                },200)
+                }, 200)
                 e.currentTarget.blur()
                 this.focused = false
             } else if (swap === true) {
                 g1.set('x',x2); g1.set('y',y2)
                 g2.set('x',x1); g2.set('y',y1)
-                while(this.loop()){}
+                this.loop()
                 e.currentTarget.blur()
                 this.focused = false
             }
@@ -54,6 +55,25 @@ class BoardView extends Backbone.View {
             this.model.removeGroups()
                 .map(gem => gem.get('x'))
         )
-        return false
+        function delay(ms) {
+            let start = Date.now()
+            while(Date.now() - start < ms);
+        }
+        setTimeout( () => {
+            columns.forEach(x => this.model.slideColumn(x))
+            let columnsHeight = this.model.columnsHeight()
+            let newGems = this.model.createNewGems(columnsHeight)
+            newGems.forEach(g => {
+                let gemView = new GemView({model: g})
+                this.$el.append(gemView.render().el)
+            })
+            this.model.pasteNewGems(columnsHeight, newGems)
+            if( columns.length !== 0) {
+                setTimeout(this.loop.bind(this), 750)
+            }
+            if( !this.model.swapsPossibility()) {
+                $("#board h1").html("No more matches")
+            }
+        }, 250)
     }
 }

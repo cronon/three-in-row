@@ -3,22 +3,28 @@ function Matrix (width, height, defaultCb=function(){} ) {
             return newArray(width).map((_, x) => defaultCb({x,y}) )
         })
     var m = function (x,y,newValue) {
-        if (x > width - 1){
+        if ( x < 0 || x > width - 1){
             throw Error(`x ${x} out of range`)
         }
-        if (y > height - 1){
+        if ( y < 0 || y > height - 1){
             throw Error(`y ${y} is out of range`)
         }
-        if (arguments.length == 2) {
-            return array[y][x]
-        } else if (arguments.length == 3) {
-            return array[y][x] = newValue
-        } else {
-            throw Error(`Arguments not supported ${arguments}`)
-        }
+        return safe.apply(null, arguments)
     }
     m.width = width
     m.height = height
+    m.safe = safe 
+    function safe (x, y, newValue) {
+        if( (0<=x && x<m.width) && (0<=y && y<m.height)){
+            if (arguments.length == 2) {
+                return array[y][x]
+            } else if (arguments.length == 3) {
+                return array[y][x] = newValue
+            }
+        } else {
+            return null
+        }
+    }
     m.foldl = function(f, initialValue){
         let memo = initialValue
         array.forEach((row, y) => {
@@ -86,6 +92,7 @@ function Matrix (width, height, defaultCb=function(){} ) {
         m(x1,y1, m(x2,y2))
         m(x2,y2, temp)
     }
+
     return m
 }
 Matrix.fromArray = function(array){
