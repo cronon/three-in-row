@@ -274,13 +274,11 @@ var BoardView = (function (_Backbone$NativeView) {
         _classCallCheck(this, BoardView);
 
         _.defaults(options, {
-            events: {
-                'focus .gem': 'focusGem'
-            },
             el: document.getElementById("board")
         });
 
         _get(Object.getPrototypeOf(BoardView.prototype), 'constructor', this).call(this, options);
+        this.shuffle();
         this.delegate('click', '.gem', this.focusGem.bind(this));
     }
 
@@ -344,21 +342,15 @@ var BoardView = (function (_Backbone$NativeView) {
             var columns = undefined,
                 columnsHeight = undefined,
                 newGems = undefined;
-            timeout(0, function () {
-                //500
+            timeout(250, function () {
                 columns = new Set(_this3.model.removeGroups().map(function (gem) {
                     return gem.get('x');
                 }));
             }).then(function () {
-                return timeout(0, function () {
-                    //250
+                return timeout(250, function () {
                     columns.forEach(function (x) {
                         return _this3.model.slideColumn(x);
                     });
-                });
-            }).then(function () {
-                return timeout(0, function () {
-                    //150
                     columnsHeight = _this3.model.columnsHeight();
                     newGems = _this3.model.createNewGems(columnsHeight);
                     var fragment = document.createDocumentFragment();
@@ -367,17 +359,30 @@ var BoardView = (function (_Backbone$NativeView) {
                         fragment.appendChild(gemView.render().el);
                     });
                     _this3.el.appendChild(fragment);
+                });
+            }).then(function () {
+                return timeout(250, function () {
                     _this3.model.pasteNewGems(columnsHeight, newGems);
                     if (columns.size !== 0) {
-                        setTimeout(_this3.loop.bind(_this3), 0); //150
+                        setTimeout(_this3.loop.bind(_this3), 150);
                     }
                     if (!_this3.model.swapsPossibility()) {
-                        $("h1").html("No more matches");
+                        document.getElementById("title").innerHTML = "No more matches. Click ob grid to shuffle";
+                        _this3.el.addEventListener("click", _this3.shuffle.bind(_this3));
                     }
                 });
             }).then(function () {
                 return timeout(0, function () {});
             });
+        }
+    }, {
+        key: 'shuffle',
+        value: function shuffle() {
+            var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
+            var board = new Board(8, 8, gemSet);
+            this.model = board;
+            this.el.removeEventListener("click", this.shuffle.bind(this));
+            this.render();
         }
     }]);
 
@@ -458,7 +463,7 @@ var GemView = (function (_Backbone$NativeView) {
         value: function onDestroy() {
             var _this = this;
 
-            timeout(150, function () {
+            timeout(250, function () {
                 return _this.el.remove();
             });
         }
@@ -483,14 +488,12 @@ function timeout(ms, cb) {
   });
   return p;
 }
-'use strict';
+"use strict";
 
 window.onload = function () {
-    var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
-    var board = new Board(8, 8, gemSet);
-    var boardView = new BoardView({ model: board });
+    var boardView = new BoardView({});
     window.BV = boardView;
-    window.B = board;
+    window.B = BV.model;
     boardView.render();
 };
 "use strict";

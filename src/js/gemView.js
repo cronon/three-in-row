@@ -14,6 +14,6 @@ class GemView extends Backbone.NativeView {
         return this
     }
     onDestroy () {
-        timeout(150, () => this.el.remove())
+        timeout(250, () => this.el.remove())
     }
 }

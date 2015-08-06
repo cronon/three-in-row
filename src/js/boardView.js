@@ -1,13 +1,11 @@
 class BoardView extends Backbone.NativeView {
     constructor(options){
         _.defaults(options, {
-            events: {
-                'focus .gem': 'focusGem'
-            },
             el: document.getElementById("board")
         })
 
         super(options)
+        this.shuffle()
         this.delegate('click', '.gem', this.focusGem.bind(this))
     }
 
@@ -50,14 +48,13 @@ class BoardView extends Backbone.NativeView {
     }
     loop () {
         let columns, columnsHeight, newGems
-        timeout(0, () => { //500
+        timeout(250, () => {
             columns = new Set(
                 this.model.removeGroups()
                     .map(gem => gem.get('x'))
             )
-        }).then(() => timeout(0, () => { //250
+        }).then(() => timeout(250, () => {
             columns.forEach(x => this.model.slideColumn(x))
-        })).then(() => timeout(0, () => { //150
             columnsHeight = this.model.columnsHeight()
             newGems = this.model.createNewGems(columnsHeight)
             let fragment = document.createDocumentFragment()
@@ -66,14 +63,23 @@ class BoardView extends Backbone.NativeView {
                 fragment.appendChild(gemView.render().el)
             })
             this.el.appendChild(fragment)
+        })).then(() => timeout(250, () => {
             this.model.pasteNewGems(columnsHeight, newGems)
             if( columns.size !== 0) {
-                setTimeout(this.loop.bind(this), 0) //150
+                setTimeout(this.loop.bind(this), 150)
             }
             if( !this.model.swapsPossibility()) {
-                $("h1").html("No more matches")
+                document.getElementById("title").innerHTML = "No more matches. Click ob grid to shuffle"
+                this.el.addEventListener("click", this.shuffle.bind(this))
             }
         })).then(()=> timeout(0, () => {
         }))
+    }
+    shuffle () {
+        const gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ')
+        let board = new Board(8,8, gemSet)
+        this.model = board
+        this.el.removeEventListener("click", this.shuffle.bind(this))
+        this.render()
     }
 }

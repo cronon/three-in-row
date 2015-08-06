@@ -1,39 +1,36 @@
 $side: 500px;
 $cell: $side/8;
 .gem {
+    box-sizing: border-box;
     display: inline-block;
     width: $cell;
     height: $cell;
     position: absolute;
-    // transition: top 250ms, left 250ms;
-
-    &::before {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 100%;
-        opacity: 0.7;
-        position: absolute;
+    transition: top 250ms, left 250ms;
+    &::after {
         font-size: 46px;
         text-align: center;
+        width: 100%;
+        height: 100%;
+        display: block;
     }
 
     &:focus {
-        outline: 2px solid green;
+        // box-shadow: inset 0px 0px 54px 4px rgba(0,0,0,1);
+        border: 4px dashed orange;
     }
-    &.gap::before {
-            background: white;
-            opacity: 1;
-            // transition: background 150ms;
+    &.gap {
+            background: black;
+            transition: background 250ms;
     }
 }
-.amber::before   { content:"A"; background: yellow; }
-.amethyst::before{ content:"A"; background: fuchsia; }
-.diamond::before { content:"D"; background: white; }
-.emerald::before { content:"E"; background: lime; }
-.ruby::before    { content:"R"; background: red; }
-.sapphire::before{ content:"S"; background: blue; }
-.topaz::before   { content:"T"; background: aqua; }
+.amber   { &::after { content:"A"; } background: yellow; }
+.amethyst{ &::after { content:"M"; } background: fuchsia; }
+.diamond { &::after { content:"D"; } background: white; }
+.emerald { &::after { content:"E"; } background: lime; }
+.ruby    { &::after { content:"R"; } background: red; }
+.sapphire{ &::after { content:"S"; } background: blue; }
+.topaz   { &::after { content:"T"; } background: aqua; }
 h1 {
     margin-right: auto;
     margin-left: auto;
@@ -45,6 +42,7 @@ h1 {
     height: $side;
     margin: 0 auto;
     overflow: hidden;
+    background: black;
     &::after {
         content: "";
         display: block;
