@@ -287,6 +287,7 @@ var BoardView = (function (_Backbone$NativeView) {
         value: function render() {
             var _this = this;
 
+            this.el.innerHTML = '';
             this.model.matrix.foldl(function (memo, gem) {
                 var gemView = new GemView({ model: gem });
                 _this.el.appendChild(gemView.render().el);

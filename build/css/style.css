@@ -4,7 +4,8 @@
   width: 62.5px;
   height: 62.5px;
   position: absolute;
-  transition: top 250ms, left 250ms; }
+  transition: top 250ms, left 250ms;
+  opacity: 0.9; }
   .gem::after {
     font-size: 46px;
     text-align: center;

@@ -10,6 +10,7 @@ class BoardView extends Backbone.NativeView {
     }
 
     render () {
+        this.el.innerHTML = '';
         this.model.matrix.foldl((memo, gem) => {
             let gemView = new GemView({model: gem})
             this.el.appendChild(gemView.render().el)

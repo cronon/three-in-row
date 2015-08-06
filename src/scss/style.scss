@@ -7,6 +7,7 @@ $cell: $side/8;
     height: $cell;
     position: absolute;
     transition: top 250ms, left 250ms;
+    opacity: 0.9;
     &::after {
         font-size: 46px;
         text-align: center;
@@ -16,7 +17,6 @@ $cell: $side/8;
     }
 
     &:focus {
-        // box-shadow: inset 0px 0px 54px 4px rgba(0,0,0,1);
         border: 4px dashed orange;
     }
     &.gap {
