@@ -8,7 +8,7 @@ var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Board = (function (_Backbone$Model) {
     _inherits(Board, _Backbone$Model);
@@ -206,14 +206,21 @@ var Board = (function (_Backbone$Model) {
 
             var SWAPS = [];
             // left horizontal .XX
-            SWAPS.push({
-                stones: [{ dx: 1, dy: 0 }, { dx: 2, dy: 0 }],
-                possibilities: [{ dx: 0, dy: 1 }, { dx: 0, dy: -1 }, { dx: -1, dy: 0 }]
-            });
-            // right horizontal XX.
+            // SWAPS.push({
+            //     stones: [
+            //         {dx: 1, dy: 0},
+            //         {dx: 2, dy: 0}
+            //     ],
+            //     possibilities: [
+            //         {dx: 0, dy: 1},
+            //         {dx: 0, dy: -1},
+            //         {dx: -1, dy: 0},
+            //     ]
+            // })
+            // horizontal .XX.
             SWAPS.push({
                 stones: [{ dx: 0, dy: 0 }, { dx: 1, dy: 0 }],
-                possibilities: [{ dx: 2, dy: 1 }, { dx: 2, dy: -1 }, { dx: 3, dy: 0 }]
+                possibilities: [{ dx: 2, dy: 1 }, { dx: 2, dy: -1 }, { dx: 3, dy: 0 }, { dx: -2, dy: 0 }, { dx: -1, dy: 1 }, { dx: -1, dy: -1 }]
             });
             // center horizontal X.X
             SWAPS.push({
@@ -221,14 +228,21 @@ var Board = (function (_Backbone$Model) {
                 possibilities: [{ dx: 1, dy: 1 }, { dx: 1, dy: -1 }]
             });
             // top vertical .XX
-            SWAPS.push({
-                stones: [{ dx: 0, dy: 1 }, { dx: 0, dy: 2 }],
-                possibilities: [{ dx: 0, dy: -1 }, { dx: 1, dy: 0 }, { dx: -1, dy: 0 }]
-            });
-            // bottom vertical .XX.
+            // SWAPS.push({
+            //     stones: [
+            //         {dx: 0, dy: 1},
+            //         {dx: 0, dy: 2}
+            //     ],
+            //     possibilities: [
+            //         {dx: 0, dy: -1},
+            //         {dx: 1, dy: 0},
+            //         {dx: -1, dy: 0},
+            //     ]
+            // })
+            // vertical .XX.
             SWAPS.push({
                 stones: [{ dx: 0, dy: 0 }, { dx: 0, dy: 1 }],
-                possibilities: [{ dx: 0, dy: 3 }, { dx: 1, dy: 2 }, { dx: -1, dy: 2 }]
+                possibilities: [{ dx: 0, dy: 3 }, { dx: 1, dy: 2 }, { dx: -1, dy: 2 }, { dx: 0, dy: -2 }, { dx: -1, dy: -1 }, { dx: 1, dy: -1 }]
             });
             // center vertical X.X
             SWAPS.push({
@@ -251,10 +265,10 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BoardView = (function (_Backbone$View) {
-    _inherits(BoardView, _Backbone$View);
+var BoardView = (function (_Backbone$NativeView) {
+    _inherits(BoardView, _Backbone$NativeView);
 
     function BoardView(options) {
         _classCallCheck(this, BoardView);
@@ -263,11 +277,11 @@ var BoardView = (function (_Backbone$View) {
             events: {
                 'focus .gem': 'focusGem'
             },
-            el: $("#board")[0]
+            el: document.getElementById("board")
         });
 
         _get(Object.getPrototypeOf(BoardView.prototype), 'constructor', this).call(this, options);
-        this.template = window.Templates.board;
+        this.delegate('click', '.gem', this.focusGem.bind(this));
     }
 
     _createClass(BoardView, [{
@@ -275,10 +289,9 @@ var BoardView = (function (_Backbone$View) {
         value: function render() {
             var _this = this;
 
-            this.$el.empty().append(this.template());
             this.model.matrix.foldl(function (memo, gem) {
                 var gemView = new GemView({ model: gem });
-                _this.$el.append(gemView.render().el);
+                _this.el.appendChild(gemView.render().el);
             });
             return this;
         }
@@ -287,13 +300,12 @@ var BoardView = (function (_Backbone$View) {
         value: function focusGem(e) {
             var _this2 = this;
 
-            console.log(this.focused);
             if (this.focused) {
                 (function () {
                     var m = _this2.model.matrix;
-                    var _e$currentTarget$dataset = e.currentTarget.dataset;
-                    var x1 = _e$currentTarget$dataset.x;
-                    var y1 = _e$currentTarget$dataset.y;
+                    var _e$target$dataset = e.target.dataset;
+                    var x1 = _e$target$dataset.x;
+                    var y1 = _e$target$dataset.y;
                     var _focused$dataset = _this2.focused.dataset;
                     var x2 = _focused$dataset.x;
                     var y2 = _focused$dataset.y;
@@ -302,7 +314,7 @@ var BoardView = (function (_Backbone$View) {
                         g2 = m(x2, y2);
                     var swap = _this2.model.swap([x1, y1], [x2, y2]);
                     if (swap === null) {
-                        _this2.focused = e.currentTarget;
+                        _this2.focused = e.target;
                     } else if (swap === false) {
                         g1.set('x', x2);g1.set('y', y2);
                         g2.set('x', x1);g2.set('y', y1);
@@ -310,18 +322,18 @@ var BoardView = (function (_Backbone$View) {
                             g1.set('x', x1);g1.set('y', y1);
                             g2.set('x', x2);g2.set('y', y2);
                         }, 200);
-                        e.currentTarget.blur();
+                        e.target.blur();
                         _this2.focused = false;
                     } else if (swap === true) {
                         g1.set('x', x2);g1.set('y', y2);
                         g2.set('x', x1);g2.set('y', y1);
                         _this2.loop();
-                        e.currentTarget.blur();
+                        e.target.blur();
                         _this2.focused = false;
                     }
                 })();
             } else {
-                this.focused = e.currentTarget;
+                this.focused = e.target;
             }
         }
     }, {
@@ -329,36 +341,48 @@ var BoardView = (function (_Backbone$View) {
         value: function loop() {
             var _this3 = this;
 
-            var columns = new Set(this.model.removeGroups().map(function (gem) {
-                return gem.get('x');
-            }));
-            function delay(ms) {
-                var start = Date.now();
-                while (Date.now() - start < ms);
-            }
-            setTimeout(function () {
-                columns.forEach(function (x) {
-                    return _this3.model.slideColumn(x);
+            var columns = undefined,
+                columnsHeight = undefined,
+                newGems = undefined;
+            timeout(0, function () {
+                //500
+                columns = new Set(_this3.model.removeGroups().map(function (gem) {
+                    return gem.get('x');
+                }));
+            }).then(function () {
+                return timeout(0, function () {
+                    //250
+                    columns.forEach(function (x) {
+                        return _this3.model.slideColumn(x);
+                    });
                 });
-                var columnsHeight = _this3.model.columnsHeight();
-                var newGems = _this3.model.createNewGems(columnsHeight);
-                newGems.forEach(function (g) {
-                    var gemView = new GemView({ model: g });
-                    _this3.$el.append(gemView.render().el);
+            }).then(function () {
+                return timeout(0, function () {
+                    //150
+                    columnsHeight = _this3.model.columnsHeight();
+                    newGems = _this3.model.createNewGems(columnsHeight);
+                    var fragment = document.createDocumentFragment();
+                    newGems.forEach(function (g) {
+                        var gemView = new GemView({ model: g });
+                        fragment.appendChild(gemView.render().el);
+                    });
+                    _this3.el.appendChild(fragment);
+                    _this3.model.pasteNewGems(columnsHeight, newGems);
+                    if (columns.size !== 0) {
+                        setTimeout(_this3.loop.bind(_this3), 0); //150
+                    }
+                    if (!_this3.model.swapsPossibility()) {
+                        $("h1").html("No more matches");
+                    }
                 });
-                _this3.model.pasteNewGems(columnsHeight, newGems);
-                if (columns.length !== 0) {
-                    setTimeout(_this3.loop.bind(_this3), 750);
-                }
-                if (!_this3.model.swapsPossibility()) {
-                    $("#board h1").html("No more matches");
-                }
-            }, 250);
+            }).then(function () {
+                return timeout(0, function () {});
+            });
         }
     }]);
 
     return BoardView;
-})(Backbone.View);
+})(Backbone.NativeView);
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -367,7 +391,7 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Gem = (function (_Backbone$Model) {
     _inherits(Gem, _Backbone$Model);
@@ -382,6 +406,7 @@ var Gem = (function (_Backbone$Model) {
         key: 'remove',
         value: function remove() {
             this.set('kind', 'gap');
+            this.destroy();
         }
     }, {
         key: 'isGap',
@@ -400,16 +425,16 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var GemView = (function (_Backbone$View) {
-    _inherits(GemView, _Backbone$View);
+var GemView = (function (_Backbone$NativeView) {
+    _inherits(GemView, _Backbone$NativeView);
 
     function GemView(options) {
         _classCallCheck(this, GemView);
 
         _get(Object.getPrototypeOf(GemView.prototype), 'constructor', this).call(this, options);
-        this.$el.attr('tabindex', 0);
+        this.el.setAttribute('tabindex', 0);
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(this.model, 'destroy', this.onDestroy);
     }
@@ -423,34 +448,51 @@ var GemView = (function (_Backbone$View) {
             var kind = _model$attributes.kind;
 
             var classes = 'col-' + x + ' row-' + y + ' ' + kind + ' gem';
-            this.$el.attr('class', classes).attr('data-x', this.model.get('x')).attr('data-y', this.model.get('y'));
+            this.el.setAttribute('class', classes);
+            this.el.setAttribute('data-x', this.model.get('x'));
+            this.el.setAttribute('data-y', this.model.get('y'));
             return this;
         }
     }, {
         key: 'onDestroy',
         value: function onDestroy() {
-            this.$el.remove();
-            this.destroy;
+            var _this = this;
+
+            timeout(150, function () {
+                return _this.el.remove();
+            });
         }
     }]);
 
     return GemView;
-})(Backbone.View);
+})(Backbone.NativeView);
 "use strict";
 
 function newArray(size) {
-    return Array.apply(null, Array(size));
+  return Array.apply(null, Array(size));
+}
+
+function timeout(ms, cb) {
+  // karma-babel doesn't want to know it
+  window.Promise = window.Promise || _.noop;
+  var p = new Promise(function (res, rej) {
+    setTimeout(function () {
+      cb();
+      res();
+    }, ms);
+  });
+  return p;
 }
 'use strict';
 
-$(function () {
+window.onload = function () {
     var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
     var board = new Board(8, 8, gemSet);
     var boardView = new BoardView({ model: board });
     window.BV = boardView;
     window.B = board;
     boardView.render();
-});
+};
 "use strict";
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();

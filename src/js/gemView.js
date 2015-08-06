@@ -1,20 +1,19 @@
-class GemView extends Backbone.View {
+class GemView extends Backbone.NativeView {
     constructor(options) {
         super(options)
-        this.$el.attr('tabindex',0)
+        this.el.setAttribute('tabindex',0)
         this.listenTo(this.model, 'change', this.render)
         this.listenTo(this.model, 'destroy', this.onDestroy)
     }
     render () {
         let {x,y,kind} = this.model.attributes
         let classes = `col-${x} row-${y} ${kind} gem`
-        this.$el.attr('class', classes)
-            .attr('data-x',this.model.get('x'))
-            .attr('data-y',this.model.get('y'))
+        this.el.setAttribute('class', classes)
+        this.el.setAttribute('data-x',this.model.get('x'))
+        this.el.setAttribute('data-y',this.model.get('y'))
         return this
     }
     onDestroy () {
-        this.$el.remove()
-        this.destroy
+        timeout(150, () => this.el.remove())
     }
 }

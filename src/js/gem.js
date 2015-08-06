@@ -4,6 +4,7 @@ class Gem extends Backbone.Model{
     }
     remove(){
         this.set('kind','gap')
+        this.destroy()
     }
     isGap() {
         return this.get('kind') == 'gap'

@@ -48,7 +48,7 @@ gulp.task('jade-client', function(){
 
 var mainBowerFiles = require('main-bower-files');
 gulp.task('bowerFiles', function() {
-    return gulp.src(mainBowerFiles().concat('node_modules/jade/runtime.js'), {
+    return gulp.src(mainBowerFiles(), {
         base: 'bower_components' 
       })
         .pipe(concat('libs.js'))

@@ -115,18 +115,18 @@ class Board extends Backbone.Model {
     swapsPossibility() {
         let SWAPS = []
         // left horizontal .XX
-        SWAPS.push({
-            stones: [
-                {dx: 1, dy: 0},
-                {dx: 2, dy: 0}
-            ],
-            possibilities: [
-                {dx: 0, dy: 1},
-                {dx: 0, dy: -1},
-                {dx: -1, dy: 0},
-            ]
-        })
-        // right horizontal XX.
+        // SWAPS.push({
+        //     stones: [
+        //         {dx: 1, dy: 0},
+        //         {dx: 2, dy: 0}
+        //     ],
+        //     possibilities: [
+        //         {dx: 0, dy: 1},
+        //         {dx: 0, dy: -1},
+        //         {dx: -1, dy: 0},
+        //     ]
+        // })
+        // horizontal .XX.
         SWAPS.push({
             stones: [
                 {dx: 0, dy: 0},
@@ -136,6 +136,10 @@ class Board extends Backbone.Model {
                 {dx: 2, dy: 1},
                 {dx: 2, dy: -1},
                 {dx: 3, dy: 0},
+
+                {dx: -2, dy: 0},
+                {dx: -1, dy: 1},
+                {dx: -1, dy: -1},
             ]
         })
         // center horizontal X.X
@@ -150,18 +154,18 @@ class Board extends Backbone.Model {
             ]
         })
         // top vertical .XX
-        SWAPS.push({
-            stones: [
-                {dx: 0, dy: 1},
-                {dx: 0, dy: 2}
-            ],
-            possibilities: [
-                {dx: 0, dy: -1},
-                {dx: 1, dy: 0},
-                {dx: -1, dy: 0},
-            ]
-        })
-        // bottom vertical .XX.
+        // SWAPS.push({
+        //     stones: [
+        //         {dx: 0, dy: 1},
+        //         {dx: 0, dy: 2}
+        //     ],
+        //     possibilities: [
+        //         {dx: 0, dy: -1},
+        //         {dx: 1, dy: 0},
+        //         {dx: -1, dy: 0},
+        //     ]
+        // })
+        // vertical .XX.
         SWAPS.push({
             stones: [
                 {dx: 0, dy: 0},
@@ -170,7 +174,11 @@ class Board extends Backbone.Model {
             possibilities: [
                 {dx: 0, dy: 3},
                 {dx: 1, dy: 2},
-                {dx: -1, dy: 2}
+                {dx: -1, dy: 2},
+
+                {dx: 0, dy: -2},
+                {dx: -1, dy: -1},
+                {dx: 1, dy: -1},
             ]
         })
         // center vertical X.X

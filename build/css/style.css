@@ -2,8 +2,7 @@
   display: inline-block;
   width: 62.5px;
   height: 62.5px;
-  position: absolute;
-  transition: transform 250ms; }
+  position: absolute; }
   .gem::before {
     content: "";
     display: block;
@@ -16,9 +15,8 @@
   .gem:focus {
     outline: 2px solid green; }
   .gem.gap::before {
-    background: black;
-    opacity: 1;
-    transition: background 250ms; }
+    background: white;
+    opacity: 1; }
 
 .amber::before {
   content: "A";
@@ -48,396 +46,530 @@
   content: "T";
   background: aqua; }
 
+h1 {
+  margin-right: auto;
+  margin-left: auto;
+  width: 500px; }
+
 #board {
   position: relative;
   width: 500px;
   height: 500px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  overflow: hidden; }
   #board::after {
     content: "";
     display: block;
     clear: both; }
 
 .col-0.row-0 {
-  transform: translate(0px, 437.5px); }
+  top: 437.5px;
+  left: 0px; }
 
 .col-0.row-1 {
-  transform: translate(0px, 375px); }
+  top: 375px;
+  left: 0px; }
 
 .col-0.row-2 {
-  transform: translate(0px, 312.5px); }
+  top: 312.5px;
+  left: 0px; }
 
 .col-0.row-3 {
-  transform: translate(0px, 250px); }
+  top: 250px;
+  left: 0px; }
 
 .col-0.row-4 {
-  transform: translate(0px, 187.5px); }
+  top: 187.5px;
+  left: 0px; }
 
 .col-0.row-5 {
-  transform: translate(0px, 125px); }
+  top: 125px;
+  left: 0px; }
 
 .col-0.row-6 {
-  transform: translate(0px, 62.5px); }
+  top: 62.5px;
+  left: 0px; }
 
 .col-0.row-7 {
-  transform: translate(0px, 0px); }
+  top: 0px;
+  left: 0px; }
 
 .col-0.row-8 {
-  transform: translate(0px, -62.5px); }
+  top: -62.5px;
+  left: 0px; }
 
 .col-0.row-9 {
-  transform: translate(0px, -125px); }
+  top: -125px;
+  left: 0px; }
 
 .col-0.row-10 {
-  transform: translate(0px, -187.5px); }
+  top: -187.5px;
+  left: 0px; }
 
 .col-0.row-11 {
-  transform: translate(0px, -250px); }
+  top: -250px;
+  left: 0px; }
 
 .col-0.row-12 {
-  transform: translate(0px, -312.5px); }
+  top: -312.5px;
+  left: 0px; }
 
 .col-0.row-13 {
-  transform: translate(0px, -375px); }
+  top: -375px;
+  left: 0px; }
 
 .col-0.row-14 {
-  transform: translate(0px, -437.5px); }
+  top: -437.5px;
+  left: 0px; }
 
 .col-0.row-15 {
-  transform: translate(0px, -500px); }
+  top: -500px;
+  left: 0px; }
 
 .col-1.row-0 {
-  transform: translate(62.5px, 437.5px); }
+  top: 437.5px;
+  left: 62.5px; }
 
 .col-1.row-1 {
-  transform: translate(62.5px, 375px); }
+  top: 375px;
+  left: 62.5px; }
 
 .col-1.row-2 {
-  transform: translate(62.5px, 312.5px); }
+  top: 312.5px;
+  left: 62.5px; }
 
 .col-1.row-3 {
-  transform: translate(62.5px, 250px); }
+  top: 250px;
+  left: 62.5px; }
 
 .col-1.row-4 {
-  transform: translate(62.5px, 187.5px); }
+  top: 187.5px;
+  left: 62.5px; }
 
 .col-1.row-5 {
-  transform: translate(62.5px, 125px); }
+  top: 125px;
+  left: 62.5px; }
 
 .col-1.row-6 {
-  transform: translate(62.5px, 62.5px); }
+  top: 62.5px;
+  left: 62.5px; }
 
 .col-1.row-7 {
-  transform: translate(62.5px, 0px); }
+  top: 0px;
+  left: 62.5px; }
 
 .col-1.row-8 {
-  transform: translate(62.5px, -62.5px); }
+  top: -62.5px;
+  left: 62.5px; }
 
 .col-1.row-9 {
-  transform: translate(62.5px, -125px); }
+  top: -125px;
+  left: 62.5px; }
 
 .col-1.row-10 {
-  transform: translate(62.5px, -187.5px); }
+  top: -187.5px;
+  left: 62.5px; }
 
 .col-1.row-11 {
-  transform: translate(62.5px, -250px); }
+  top: -250px;
+  left: 62.5px; }
 
 .col-1.row-12 {
-  transform: translate(62.5px, -312.5px); }
+  top: -312.5px;
+  left: 62.5px; }
 
 .col-1.row-13 {
-  transform: translate(62.5px, -375px); }
+  top: -375px;
+  left: 62.5px; }
 
 .col-1.row-14 {
-  transform: translate(62.5px, -437.5px); }
+  top: -437.5px;
+  left: 62.5px; }
 
 .col-1.row-15 {
-  transform: translate(62.5px, -500px); }
+  top: -500px;
+  left: 62.5px; }
 
 .col-2.row-0 {
-  transform: translate(125px, 437.5px); }
+  top: 437.5px;
+  left: 125px; }
 
 .col-2.row-1 {
-  transform: translate(125px, 375px); }
+  top: 375px;
+  left: 125px; }
 
 .col-2.row-2 {
-  transform: translate(125px, 312.5px); }
+  top: 312.5px;
+  left: 125px; }
 
 .col-2.row-3 {
-  transform: translate(125px, 250px); }
+  top: 250px;
+  left: 125px; }
 
 .col-2.row-4 {
-  transform: translate(125px, 187.5px); }
+  top: 187.5px;
+  left: 125px; }
 
 .col-2.row-5 {
-  transform: translate(125px, 125px); }
+  top: 125px;
+  left: 125px; }
 
 .col-2.row-6 {
-  transform: translate(125px, 62.5px); }
+  top: 62.5px;
+  left: 125px; }
 
 .col-2.row-7 {
-  transform: translate(125px, 0px); }
+  top: 0px;
+  left: 125px; }
 
 .col-2.row-8 {
-  transform: translate(125px, -62.5px); }
+  top: -62.5px;
+  left: 125px; }
 
 .col-2.row-9 {
-  transform: translate(125px, -125px); }
+  top: -125px;
+  left: 125px; }
 
 .col-2.row-10 {
-  transform: translate(125px, -187.5px); }
+  top: -187.5px;
+  left: 125px; }
 
 .col-2.row-11 {
-  transform: translate(125px, -250px); }
+  top: -250px;
+  left: 125px; }
 
 .col-2.row-12 {
-  transform: translate(125px, -312.5px); }
+  top: -312.5px;
+  left: 125px; }
 
 .col-2.row-13 {
-  transform: translate(125px, -375px); }
+  top: -375px;
+  left: 125px; }
 
 .col-2.row-14 {
-  transform: translate(125px, -437.5px); }
+  top: -437.5px;
+  left: 125px; }
 
 .col-2.row-15 {
-  transform: translate(125px, -500px); }
+  top: -500px;
+  left: 125px; }
 
 .col-3.row-0 {
-  transform: translate(187.5px, 437.5px); }
+  top: 437.5px;
+  left: 187.5px; }
 
 .col-3.row-1 {
-  transform: translate(187.5px, 375px); }
+  top: 375px;
+  left: 187.5px; }
 
 .col-3.row-2 {
-  transform: translate(187.5px, 312.5px); }
+  top: 312.5px;
+  left: 187.5px; }
 
 .col-3.row-3 {
-  transform: translate(187.5px, 250px); }
+  top: 250px;
+  left: 187.5px; }
 
 .col-3.row-4 {
-  transform: translate(187.5px, 187.5px); }
+  top: 187.5px;
+  left: 187.5px; }
 
 .col-3.row-5 {
-  transform: translate(187.5px, 125px); }
+  top: 125px;
+  left: 187.5px; }
 
 .col-3.row-6 {
-  transform: translate(187.5px, 62.5px); }
+  top: 62.5px;
+  left: 187.5px; }
 
 .col-3.row-7 {
-  transform: translate(187.5px, 0px); }
+  top: 0px;
+  left: 187.5px; }
 
 .col-3.row-8 {
-  transform: translate(187.5px, -62.5px); }
+  top: -62.5px;
+  left: 187.5px; }
 
 .col-3.row-9 {
-  transform: translate(187.5px, -125px); }
+  top: -125px;
+  left: 187.5px; }
 
 .col-3.row-10 {
-  transform: translate(187.5px, -187.5px); }
+  top: -187.5px;
+  left: 187.5px; }
 
 .col-3.row-11 {
-  transform: translate(187.5px, -250px); }
+  top: -250px;
+  left: 187.5px; }
 
 .col-3.row-12 {
-  transform: translate(187.5px, -312.5px); }
+  top: -312.5px;
+  left: 187.5px; }
 
 .col-3.row-13 {
-  transform: translate(187.5px, -375px); }
+  top: -375px;
+  left: 187.5px; }
 
 .col-3.row-14 {
-  transform: translate(187.5px, -437.5px); }
+  top: -437.5px;
+  left: 187.5px; }
 
 .col-3.row-15 {
-  transform: translate(187.5px, -500px); }
+  top: -500px;
+  left: 187.5px; }
 
 .col-4.row-0 {
-  transform: translate(250px, 437.5px); }
+  top: 437.5px;
+  left: 250px; }
 
 .col-4.row-1 {
-  transform: translate(250px, 375px); }
+  top: 375px;
+  left: 250px; }
 
 .col-4.row-2 {
-  transform: translate(250px, 312.5px); }
+  top: 312.5px;
+  left: 250px; }
 
 .col-4.row-3 {
-  transform: translate(250px, 250px); }
+  top: 250px;
+  left: 250px; }
 
 .col-4.row-4 {
-  transform: translate(250px, 187.5px); }
+  top: 187.5px;
+  left: 250px; }
 
 .col-4.row-5 {
-  transform: translate(250px, 125px); }
+  top: 125px;
+  left: 250px; }
 
 .col-4.row-6 {
-  transform: translate(250px, 62.5px); }
+  top: 62.5px;
+  left: 250px; }
 
 .col-4.row-7 {
-  transform: translate(250px, 0px); }
+  top: 0px;
+  left: 250px; }
 
 .col-4.row-8 {
-  transform: translate(250px, -62.5px); }
+  top: -62.5px;
+  left: 250px; }
 
 .col-4.row-9 {
-  transform: translate(250px, -125px); }
+  top: -125px;
+  left: 250px; }
 
 .col-4.row-10 {
-  transform: translate(250px, -187.5px); }
+  top: -187.5px;
+  left: 250px; }
 
 .col-4.row-11 {
-  transform: translate(250px, -250px); }
+  top: -250px;
+  left: 250px; }
 
 .col-4.row-12 {
-  transform: translate(250px, -312.5px); }
+  top: -312.5px;
+  left: 250px; }
 
 .col-4.row-13 {
-  transform: translate(250px, -375px); }
+  top: -375px;
+  left: 250px; }
 
 .col-4.row-14 {
-  transform: translate(250px, -437.5px); }
+  top: -437.5px;
+  left: 250px; }
 
 .col-4.row-15 {
-  transform: translate(250px, -500px); }
+  top: -500px;
+  left: 250px; }
 
 .col-5.row-0 {
-  transform: translate(312.5px, 437.5px); }
+  top: 437.5px;
+  left: 312.5px; }
 
 .col-5.row-1 {
-  transform: translate(312.5px, 375px); }
+  top: 375px;
+  left: 312.5px; }
 
 .col-5.row-2 {
-  transform: translate(312.5px, 312.5px); }
+  top: 312.5px;
+  left: 312.5px; }
 
 .col-5.row-3 {
-  transform: translate(312.5px, 250px); }
+  top: 250px;
+  left: 312.5px; }
 
 .col-5.row-4 {
-  transform: translate(312.5px, 187.5px); }
+  top: 187.5px;
+  left: 312.5px; }
 
 .col-5.row-5 {
-  transform: translate(312.5px, 125px); }
+  top: 125px;
+  left: 312.5px; }
 
 .col-5.row-6 {
-  transform: translate(312.5px, 62.5px); }
+  top: 62.5px;
+  left: 312.5px; }
 
 .col-5.row-7 {
-  transform: translate(312.5px, 0px); }
+  top: 0px;
+  left: 312.5px; }
 
 .col-5.row-8 {
-  transform: translate(312.5px, -62.5px); }
+  top: -62.5px;
+  left: 312.5px; }
 
 .col-5.row-9 {
-  transform: translate(312.5px, -125px); }
+  top: -125px;
+  left: 312.5px; }
 
 .col-5.row-10 {
-  transform: translate(312.5px, -187.5px); }
+  top: -187.5px;
+  left: 312.5px; }
 
 .col-5.row-11 {
-  transform: translate(312.5px, -250px); }
+  top: -250px;
+  left: 312.5px; }
 
 .col-5.row-12 {
-  transform: translate(312.5px, -312.5px); }
+  top: -312.5px;
+  left: 312.5px; }
 
 .col-5.row-13 {
-  transform: translate(312.5px, -375px); }
+  top: -375px;
+  left: 312.5px; }
 
 .col-5.row-14 {
-  transform: translate(312.5px, -437.5px); }
+  top: -437.5px;
+  left: 312.5px; }
 
 .col-5.row-15 {
-  transform: translate(312.5px, -500px); }
+  top: -500px;
+  left: 312.5px; }
 
 .col-6.row-0 {
-  transform: translate(375px, 437.5px); }
+  top: 437.5px;
+  left: 375px; }
 
 .col-6.row-1 {
-  transform: translate(375px, 375px); }
+  top: 375px;
+  left: 375px; }
 
 .col-6.row-2 {
-  transform: translate(375px, 312.5px); }
+  top: 312.5px;
+  left: 375px; }
 
 .col-6.row-3 {
-  transform: translate(375px, 250px); }
+  top: 250px;
+  left: 375px; }
 
 .col-6.row-4 {
-  transform: translate(375px, 187.5px); }
+  top: 187.5px;
+  left: 375px; }
 
 .col-6.row-5 {
-  transform: translate(375px, 125px); }
+  top: 125px;
+  left: 375px; }
 
 .col-6.row-6 {
-  transform: translate(375px, 62.5px); }
+  top: 62.5px;
+  left: 375px; }
 
 .col-6.row-7 {
-  transform: translate(375px, 0px); }
+  top: 0px;
+  left: 375px; }
 
 .col-6.row-8 {
-  transform: translate(375px, -62.5px); }
+  top: -62.5px;
+  left: 375px; }
 
 .col-6.row-9 {
-  transform: translate(375px, -125px); }
+  top: -125px;
+  left: 375px; }
 
 .col-6.row-10 {
-  transform: translate(375px, -187.5px); }
+  top: -187.5px;
+  left: 375px; }
 
 .col-6.row-11 {
-  transform: translate(375px, -250px); }
+  top: -250px;
+  left: 375px; }
 
 .col-6.row-12 {
-  transform: translate(375px, -312.5px); }
+  top: -312.5px;
+  left: 375px; }
 
 .col-6.row-13 {
-  transform: translate(375px, -375px); }
+  top: -375px;
+  left: 375px; }
 
 .col-6.row-14 {
-  transform: translate(375px, -437.5px); }
+  top: -437.5px;
+  left: 375px; }
 
 .col-6.row-15 {
-  transform: translate(375px, -500px); }
+  top: -500px;
+  left: 375px; }
 
 .col-7.row-0 {
-  transform: translate(437.5px, 437.5px); }
+  top: 437.5px;
+  left: 437.5px; }
 
 .col-7.row-1 {
-  transform: translate(437.5px, 375px); }
+  top: 375px;
+  left: 437.5px; }
 
 .col-7.row-2 {
-  transform: translate(437.5px, 312.5px); }
+  top: 312.5px;
+  left: 437.5px; }
 
 .col-7.row-3 {
-  transform: translate(437.5px, 250px); }
+  top: 250px;
+  left: 437.5px; }
 
 .col-7.row-4 {
-  transform: translate(437.5px, 187.5px); }
+  top: 187.5px;
+  left: 437.5px; }
 
 .col-7.row-5 {
-  transform: translate(437.5px, 125px); }
+  top: 125px;
+  left: 437.5px; }
 
 .col-7.row-6 {
-  transform: translate(437.5px, 62.5px); }
+  top: 62.5px;
+  left: 437.5px; }
 
 .col-7.row-7 {
-  transform: translate(437.5px, 0px); }
+  top: 0px;
+  left: 437.5px; }
 
 .col-7.row-8 {
-  transform: translate(437.5px, -62.5px); }
+  top: -62.5px;
+  left: 437.5px; }
 
 .col-7.row-9 {
-  transform: translate(437.5px, -125px); }
+  top: -125px;
+  left: 437.5px; }
 
 .col-7.row-10 {
-  transform: translate(437.5px, -187.5px); }
+  top: -187.5px;
+  left: 437.5px; }
 
 .col-7.row-11 {
-  transform: translate(437.5px, -250px); }
+  top: -250px;
+  left: 437.5px; }
 
 .col-7.row-12 {
-  transform: translate(437.5px, -312.5px); }
+  top: -312.5px;
+  left: 437.5px; }
 
 .col-7.row-13 {
-  transform: translate(437.5px, -375px); }
+  top: -375px;
+  left: 437.5px; }
 
 .col-7.row-14 {
-  transform: translate(437.5px, -437.5px); }
+  top: -437.5px;
+  left: 437.5px; }
 
 .col-7.row-15 {
-  transform: translate(437.5px, -500px); }
+  top: -500px;
+  left: 437.5px; }

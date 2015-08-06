@@ -4,5 +4,5 @@ var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-buf.push("<h1>Fancy Board</h1>");;return buf.join("");
+;return buf.join("");
 }
