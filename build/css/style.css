@@ -8,12 +8,16 @@
   opacity: 1; }
   .gem::after {
     font-size: 46px;
+    line-height: 62.5px;
     text-align: center;
-    width: 100%;
-    height: 100%;
-    display: block; }
+    width: 62.5px;
+    height: 62.5px;
+    display: inline-block; }
   .gem:focus {
     border: 4px dashed orange; }
+  .gem:focus::after {
+    width: 54.5px;
+    line-height: 54.5px; }
   .gem.gap {
     background: black;
     transition: background 250ms; }

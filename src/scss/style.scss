@@ -10,14 +10,18 @@ $cell: $side/8;
     opacity: 1;
     &::after {
         font-size: 46px;
+        line-height: $cell;
         text-align: center;
-        width: 100%;
-        height: 100%;
-        display: block;
+        width: $cell;
+        height: $cell;
+        display: inline-block;
     }
-
     &:focus {
         border: 4px dashed orange;
+    }
+    &:focus::after {
+        width: $cell - 8px;
+        line-height: $cell - 8px;
     }
     &.gap {
             background: black;
