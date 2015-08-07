@@ -7,7 +7,7 @@ $cell: $side/8;
     height: $cell;
     position: absolute;
     transition: top 250ms, left 250ms;
-    opacity: 0.9;
+    opacity: 1;
     &::after {
         font-size: 46px;
         text-align: center;
@@ -49,7 +49,17 @@ h1 {
         clear: both;
     }
 }
-
+#overlay {
+    width: $side;
+    height: $side;
+    margin-left: -250px;
+    left: 50%;
+    position: absolute;
+    z-index: 1;
+}
+.hidden {
+    display: none;
+}
 @for $x from 0 through 7 {
     @for $y from 0 through 15 {
         .col-#{$x}.row-#{$y} {

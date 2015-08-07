@@ -340,6 +340,8 @@ var BoardView = (function (_Backbone$NativeView) {
         value: function loop() {
             var _this3 = this;
 
+            var overlay = document.getElementById('overlay');
+            overlay.classList.remove('hidden');
             var columns = undefined,
                 columnsHeight = undefined,
                 newGems = undefined;
@@ -347,6 +349,7 @@ var BoardView = (function (_Backbone$NativeView) {
                 columns = new Set(_this3.model.removeGroups().map(function (gem) {
                     return gem.get('x');
                 }));
+                if (columns.size == 0) overlay.classList.add('hidden');
             }).then(function () {
                 return timeout(250, function () {
                     columns.forEach(function (x) {
@@ -365,11 +368,11 @@ var BoardView = (function (_Backbone$NativeView) {
                 return timeout(250, function () {
                     _this3.model.pasteNewGems(columnsHeight, newGems);
                     if (columns.size !== 0) {
-                        setTimeout(_this3.loop.bind(_this3), 150);
+                        setTimeout(_this3.loop.bind(_this3), 0);
                     }
                     if (!_this3.model.swapsPossibility()) {
-                        document.getElementById("title").innerHTML = "No more matches. Click ob grid to shuffle";
-                        _this3.el.addEventListener("click", _this3.shuffle.bind(_this3));
+                        document.getElementById("title").innerHTML = "No more matches. Click to shuffle";
+                        _this3.delegate("click", _this3.shuffle);
                     }
                 });
             }).then(function () {
@@ -382,7 +385,8 @@ var BoardView = (function (_Backbone$NativeView) {
             var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
             var board = new Board(8, 8, gemSet);
             this.model = board;
-            this.el.removeEventListener("click", this.shuffle.bind(this));
+            document.getElementById("title").innerHTML = "Match-3";
+            this.undelegate("click");
             this.render();
         }
     }]);

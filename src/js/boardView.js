@@ -48,12 +48,15 @@ class BoardView extends Backbone.NativeView {
         }
     }
     loop () {
+        let overlay = document.getElementById('overlay')
+        overlay.classList.remove('hidden')
         let columns, columnsHeight, newGems
         timeout(250, () => {
             columns = new Set(
                 this.model.removeGroups()
                     .map(gem => gem.get('x'))
             )
+            if (columns.size == 0) overlay.classList.add('hidden')
         }).then(() => timeout(250, () => {
             columns.forEach(x => this.model.slideColumn(x))
             columnsHeight = this.model.columnsHeight()
@@ -67,11 +70,11 @@ class BoardView extends Backbone.NativeView {
         })).then(() => timeout(250, () => {
             this.model.pasteNewGems(columnsHeight, newGems)
             if( columns.size !== 0) {
-                setTimeout(this.loop.bind(this), 150)
+                setTimeout(this.loop.bind(this), 0)
             }
             if( !this.model.swapsPossibility()) {
-                document.getElementById("title").innerHTML = "No more matches. Click ob grid to shuffle"
-                this.el.addEventListener("click", this.shuffle.bind(this))
+                document.getElementById("title").innerHTML = "No more matches. Click to shuffle"
+                this.delegate("click", this.shuffle)
             }
         })).then(()=> timeout(0, () => {
         }))
@@ -80,7 +83,8 @@ class BoardView extends Backbone.NativeView {
         const gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ')
         let board = new Board(8,8, gemSet)
         this.model = board
-        this.el.removeEventListener("click", this.shuffle.bind(this))
+        document.getElementById("title").innerHTML = "Match-3"
+        this.undelegate("click")
         this.render()
     }
 }
