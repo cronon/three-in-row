@@ -375,8 +375,6 @@ var BoardView = (function (_Backbone$NativeView) {
                         _this3.delegate("click", _this3.shuffle);
                     }
                 });
-            }).then(function () {
-                return timeout(0, function () {});
             });
         }
     }, {

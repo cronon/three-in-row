@@ -76,7 +76,6 @@ class BoardView extends Backbone.NativeView {
                 document.getElementById("title").innerHTML = "No more matches. Click to shuffle"
                 this.delegate("click", this.shuffle)
             }
-        })).then(()=> timeout(0, () => {
         }))
     }
     shuffle () {
