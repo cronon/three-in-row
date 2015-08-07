@@ -21,6 +21,7 @@ $cell: $side/8;
     }
     &:focus::after {
         width: $cell - 8px;
+        height: $cell - 8px;
         line-height: $cell - 8px;
     }
     &.gap {

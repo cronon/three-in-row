@@ -17,6 +17,7 @@
     border: 4px dashed orange; }
   .gem:focus::after {
     width: 54.5px;
+    height: 54.5px;
     line-height: 54.5px; }
   .gem.gap {
     background: black;
