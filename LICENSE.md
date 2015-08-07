@@ -1,0 +1,2 @@
+https://tldrlegal.com/license/beerware-license
+The user is allowed to do anything with the licensed material. Should the user of the product meet the author and consider the software useful, he is encouraged to buy the author a beer "in return" (or, in some variations, to drink a beer in the author's honor).
