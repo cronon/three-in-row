@@ -257,15 +257,15 @@ var Board = (function (_Backbone$Model) {
 
     return Board;
 })(Backbone.Model);
-'use strict';
+"use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var BoardView = (function (_Backbone$NativeView) {
     _inherits(BoardView, _Backbone$NativeView);
@@ -277,13 +277,14 @@ var BoardView = (function (_Backbone$NativeView) {
             el: document.getElementById("board")
         });
 
-        _get(Object.getPrototypeOf(BoardView.prototype), 'constructor', this).call(this, options);
+        _get(Object.getPrototypeOf(BoardView.prototype), "constructor", this).call(this, options);
+        this.title = document.getElementById("title");
         this.shuffle();
         this.delegate('click', '.gem', this.focusGem.bind(this));
     }
 
     _createClass(BoardView, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             var _this = this;
 
@@ -295,7 +296,7 @@ var BoardView = (function (_Backbone$NativeView) {
             return this;
         }
     }, {
-        key: 'focusGem',
+        key: "focusGem",
         value: function focusGem(e) {
             var _this2 = this;
 
@@ -336,7 +337,7 @@ var BoardView = (function (_Backbone$NativeView) {
             }
         }
     }, {
-        key: 'loop',
+        key: "loop",
         value: function loop() {
             var _this3 = this;
 
@@ -371,20 +372,21 @@ var BoardView = (function (_Backbone$NativeView) {
                         setTimeout(_this3.loop.bind(_this3), 0);
                     }
                     if (!_this3.model.swapsPossibility()) {
-                        document.getElementById("title").innerHTML = "No more matches. Click to shuffle";
-                        _this3.delegate("click", _this3.shuffle);
+                        _this3.title.innerHTML = "No more matches. Click here to shuffle";
+                        _this3.shuffle_ = _this3.shuffle.bind(_this3);
+                        _this3.title.addEventListener("click", _this3.shuffle_, true);
                     }
                 });
             });
         }
     }, {
-        key: 'shuffle',
-        value: function shuffle() {
+        key: "shuffle",
+        value: function shuffle(e) {
             var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
             var board = new Board(8, 8, gemSet);
             this.model = board;
-            document.getElementById("title").innerHTML = "Match-3";
-            this.undelegate("click");
+            this.title.innerHTML = "Match-3";
+            this.title.removeEventListener("click", this.shuffle_, true);
             this.render();
         }
     }]);

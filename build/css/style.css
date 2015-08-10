@@ -61,7 +61,8 @@
 h1 {
   margin-right: auto;
   margin-left: auto;
-  width: 500px; }
+  width: 500px;
+  font-size: 1.8em; }
 
 #board {
   position: relative;
