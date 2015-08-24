@@ -279,6 +279,8 @@ var BoardView = (function (_Backbone$NativeView) {
 
         _get(Object.getPrototypeOf(BoardView.prototype), "constructor", this).call(this, options);
         this.title = document.getElementById("title");
+        this.shuffleHeader = document.getElementById("shuffle");
+        this.shuffleHeader.addEventListener('click', this.shuffle.bind(this));
         this.shuffle();
         this.delegate('click', '.gem', this.focusGem.bind(this));
     }
@@ -288,6 +290,8 @@ var BoardView = (function (_Backbone$NativeView) {
         value: function render() {
             var _this = this;
 
+            this.shuffleHeader.classList.add('hidden');
+            this.title.classList.remove('hidden');
             this.el.innerHTML = '';
             this.model.matrix.foldl(function (memo, gem) {
                 var gemView = new GemView({ model: gem });
@@ -372,9 +376,8 @@ var BoardView = (function (_Backbone$NativeView) {
                         setTimeout(_this3.loop.bind(_this3), 0);
                     }
                     if (!_this3.model.swapsPossibility()) {
-                        _this3.title.innerHTML = "No more matches. Click here to shuffle";
-                        _this3.shuffle_ = _this3.shuffle.bind(_this3);
-                        _this3.title.addEventListener("click", _this3.shuffle_, true);
+                        _this3.shuffleHeader.classList.remove('hidden');
+                        _this3.title.classList.add('hidden');
                     }
                 });
             });
@@ -385,8 +388,6 @@ var BoardView = (function (_Backbone$NativeView) {
             var gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ');
             var board = new Board(8, 8, gemSet);
             this.model = board;
-            this.title.innerHTML = "Match-3";
-            this.title.removeEventListener("click", this.shuffle_, true);
             this.render();
         }
     }]);

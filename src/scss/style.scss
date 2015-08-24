@@ -1,4 +1,4 @@
-$side: 500px;
+$side: 480px;
 $cell: $side/8;
 .gem {
     box-sizing: border-box;
@@ -6,7 +6,7 @@ $cell: $side/8;
     width: $cell;
     height: $cell;
     position: absolute;
-    transition: top 250ms, left 250ms;
+    transition: transform 250ms;
     opacity: 1;
     &::after {
         font-size: 46px;
@@ -69,8 +69,9 @@ h1 {
 @for $x from 0 through 7 {
     @for $y from 0 through 15 {
         .col-#{$x}.row-#{$y} {
-            top: $side - $cell*($y+1);
-            left: $cell*$x;
+            transform: translate($cell*$x, $side - $cell*($y+1));
+            // top: $side - $cell*($y+1);
+            // left: $cell*$x;
         }
     }
 }

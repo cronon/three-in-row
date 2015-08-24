@@ -6,11 +6,15 @@ class BoardView extends Backbone.NativeView {
 
         super(options)
         this.title = document.getElementById("title")
+        this.shuffleHeader = document.getElementById("shuffle")
+        this.shuffleHeader.addEventListener('click', this.shuffle.bind(this))
         this.shuffle()
         this.delegate('click', '.gem', this.focusGem.bind(this))
     }
 
     render () {
+        this.shuffleHeader.classList.add('hidden')
+        this.title.classList.remove('hidden')
         this.el.innerHTML = '';
         this.model.matrix.foldl((memo, gem) => {
             let gemView = new GemView({model: gem})
@@ -74,9 +78,8 @@ class BoardView extends Backbone.NativeView {
                 setTimeout(this.loop.bind(this), 0)
             }
             if( !this.model.swapsPossibility()) {
-                this.title.innerHTML = "No more matches. Click here to shuffle"
-                this.shuffle_ = this.shuffle.bind(this)
-                this.title.addEventListener("click", this.shuffle_, true)
+                this.shuffleHeader.classList.remove('hidden')
+                this.title.classList.add('hidden')
             }
         }))
     }
@@ -84,8 +87,6 @@ class BoardView extends Backbone.NativeView {
         const gemSet = 'ruby emerald topaz sapphire amber amethyst diamond'.split(' ')
         let board = new Board(8,8, gemSet)
         this.model = board
-        this.title.innerHTML = "Match-3"
-        this.title.removeEventListener("click", this.shuffle_, true)
         this.render()
     }
 }
